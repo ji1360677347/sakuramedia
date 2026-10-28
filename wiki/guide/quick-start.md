@@ -4,42 +4,39 @@ outline: [2, 3]
 
 # Quick Start
 
-This guide does exactly one thing: deploy the SakuraMedia backend and import movies that already exist on the host into a local media library.
+This guide deploys the SakuraMedia backend from scratch and imports movies that already exist on the host into the media library. After completing the basic flow, you can continue to configure automatic downloading and vector services as needed.
 
-Automatic downloading (qBittorrent + indexers), image search, the 115 cloud drive and other features are optional extensions; see [Auto-Download and Indexers](/guide/auto-download), [Advanced Deployment](/guide/docker) and [Recommended Plugins](/guide/plugins).
+If you only want to get import and playback working first, completing stages 1 and 2 is enough. Automatic downloading, image search, the 115 cloud drive and other features are optional extensions; see the two sections below and [Recommended Plugins](/guide/plugins).
 
 ## Before you begin
 
 - A host or NAS that runs continuously, with Docker and Docker Compose installed.
 - An SSD directory for backend runtime data (database, configuration, logs, plugins).
-- A host directory that holds your existing movies, for example `/mnt/volume1/media/av`.
-- The client, downloaded from [GitHub Releases](https://github.com/tinypinglite/sakuramedia/releases/latest) (the iOS client requires iOS 15.0 or later).
+- The client, downloaded from [GitHub Releases](https://github.com/tinypinglite/sakuramedia/releases/latest).
 
 ## Stage 1: Deploy the backend
 
 ### 1. Prepare the directories
 
-```bash
-# Backend runtime data; subdirectories such as config, logs and plugins are created by the container on first start
-mkdir -p sakuramedia/sakuramedia-data/postgres
+In an empty directory on an SSD (recommended), run the following commands, or create the directories through your NAS file manager.
 
-# Create the media library directory under the same parent as the existing movies directory
-mkdir -p /mnt/volume1/media/library
-```
+a. Create the directory `sakuramedia-data`.
 
-Example directory layout:
+b. Create a new directory named `media` under the parent directory of your existing movies. For example, if your existing movies are in `/mnt/av`, create a `media` directory under `/mnt/`.
+
+Final directory layout example:
 
 ```text
-/mnt/volume1/media/
-├── av/          # Existing movies (example name; use your own directory)
-└── library/     # SakuraMedia media library
+/mnt
+├── av/          # Existing movies (example name; replace with your actual directory)
+└── media/       # For the SakuraMedia media library you will create later
 ```
 
-`av` and `library` sit under the same host directory; later you mount only their parent directory `/mnt/volume1/media`. That way both directories are on the same mount point during import, which is what makes hard links available when you choose "Keep source file".
+`av` and `media` are under the same host directory; later you mount only their parent directory `/mnt`. That way both directories are on the same mount point during import, so hard links are available.
 
 ### 2. Write `compose.yaml`
 
-Create `compose.yaml` inside the `sakuramedia/` directory:
+Create `compose.yaml` as a sibling of the `sakuramedia-data` directory and fill in the following content. The `volumes` of the `sakuramedia` container must be adjusted to your actual setup.
 
 ```yaml
 services:
@@ -81,18 +78,18 @@ services:
       # NO_PROXY: "localhost,127.0.0.1"
       MALLOC_TRIM_THRESHOLD_: "131072"
     volumes:
-      - ./sakuramedia-data:/data
-      # Host parent directory that holds the existing movies and the media library; change it to your own path
-      - /mnt/volume1/media:/media
+      - ./sakuramedia-data:/data # This line usually does not need to change.
+      # Host parent directory that holds the existing movies and the media library; change it to your own path. This example follows the assumptions above.
+      - /mnt:/mnt
 ```
 
 ::: danger Must be changed before saving
-- Change `/mnt/volume1/media` to the host parent directory that contains both the "existing movies directory" and the "media library directory". It must be an absolute path.
+- Change `/mnt` to the host parent directory that contains both the "existing movies directory" and the "media library directory". It must be an absolute path.
 - Change `TZ` if you are not in the China time zone.
-- If SakuraMedia runs as a non-root user, make sure PUID/PGID have read and write access to `/mnt/volume1/media`.
+- If SakuraMedia runs as a non-root user, make sure PUID/PGID have read and write access to your mounted media directory (in the example, `/mnt`).
 :::
 
-SakuraMedia's `/data` holds backend runtime data, while `/media` holds media data. Never put the media library under `/data`.
+SakuraMedia's `/data` holds backend runtime data, while media data lives under `/mnt`; an HDD is recommended.
 
 ::: tip Database
 By default the backend connects to the built-in PostgreSQL through the service name `postgres`, so the example works as-is. To use an external PostgreSQL, change `[database].url` as described in the [Configuration Reference](/guide/config#database).
@@ -101,7 +98,8 @@ By default the backend connects to the built-in PostgreSQL through the service n
 ### 3. Start
 
 ```bash
-cd sakuramedia
+# Go to the directory containing compose.yaml
+cd /path/to/compose-directory
 docker compose up -d
 docker compose ps
 ```
@@ -124,22 +122,10 @@ Go to "System Settings → Media Library → Add", choose "Local Storage & qBitt
 
 | Field | Value | Host directory |
 |---|---|---|
-| Media library path | `/media/library` | `/mnt/volume1/media/library` |
-| Manual import root | `/media/av` | `/mnt/volume1/media/av` |
+| Media library path | `/mnt/media` | `/mnt/media` |
+| Manual import root (the directory where your existing movies are stored) | `/mnt/av` | `/mnt/av` |
 
-The media library path is the final destination for imported movies; the manual import root is the scope used when browsing existing files.
-
-`/media/av` is a path inside the container and maps to `/mnt/volume1/media/av` on the host. The existing movies directory must be mounted into the container, otherwise it will not appear in the source browser. If your directory has a different name, replace `/media/av` with `/media/<actual-directory-name>`.
-
-::: tip Path mapping
-- Host `/mnt/volume1/media` → container `/media`
-- Existing movies `/mnt/volume1/media/av` → container `/media/av`
-- New media library `/mnt/volume1/media/library` → container `/media/library`
-
-See [Container Paths and Hard Links](/guide/container-paths) for the full rules.
-:::
-
-<Screenshot src="/images/guide-en/media-library-form.png" alt="Add media library form" caption="Interface illustration: adding a media library; the fields come from the selected storage plugin." />
+The media library path is the final destination for imported movies; the manual import root is the root directory browsed when importing resources in the app.
 
 ### 2. Import your existing movies
 
@@ -149,7 +135,7 @@ The three import modes:
 
 | Mode | What actually happens | Source file | Best for |
 |---|---|---|---|
-| Keep source file | Prefers a hard link; copies when a hard link is not possible | Kept | Same mount point, saving space and keeping the torrent seeding |
+| Keep source file | Prefers a hard link; falls back to copying when a hard link is not possible | Kept | Same mount point, saving space and keeping the torrent seeding |
 | Delete source file after import | Copies into the media library and deletes the source file on success (effectively a move) | Deleted | You do not want to keep the original |
 | Import in place | No copy and no hard link; the media references the source file directly | Untouched | Files are already organized and you do not want to touch them |
 
@@ -161,23 +147,159 @@ For a first import, pick a small directory and verify the flow with "Keep source
 
 After submitting, watch the progress in the "Task Center". Once the import succeeds, open the movie detail page to confirm the media appears and plays.
 
-See [Import existing assets](/manual/import) for the fuller import walkthrough.
+Import tasks are one-off tasks; if the source directory changes later, for example when new movies are added, they will not be imported automatically.
 
-::: warning JavDB images and metadata
-Metadata and images are fetched from JavDB during import. If the container cannot reach the JavDB API or the image CDN (`tp.spfcas.com`), movies may be missing covers, stills or part of their information; when you use a proxy, make sure these domains are reachable.
-:::
+## Optional: auto download and indexers
 
-## Optional: automatic downloading
+After completing the deployment and media library creation above, SakuraMedia needs a configured download client and indexer before it can automatically find sources for subscribed movies, submit downloads, and import them into the media library. This section uses local storage and qBittorrent as an example.
 
-To have the system find resources, download and import movies you have subscribed to, configure qBittorrent and an indexer:
+### What you need
 
-- [Auto-Download and Indexers](/guide/auto-download)
-- [Get your first movie](/manual/first-movie)
+- A reachable qBittorrent on the same machine as SakuraMedia (Docker on the same host or a NAS package).
+- A Jackett or Prowlarr indexer.
+- If you want to use hard links, the download directory and the media library must be on the same mount point.
+
+### 1. Make qBittorrent and SakuraMedia see the same download directory
+
+The basic deployment above sets the media library directory to `/mnt/media` and mounts the parent directory `/mnt` into the `sakuramedia` container. The qBittorrent container's download directory also needs to be on the same mount point; this example assumes that `/downloads` inside qBittorrent maps to the host directory `/mnt/downloads`. That way both containers work with the same host directory.
+
+### 2. Add a download client
+
+Go to "System Settings → Download Clients → Add" and select the target media library:
+
+| Field | Value |
+|---|---|
+| qBittorrent address | qB on the host: `http://<host-ip>:8080` (use your qB WebUI port); qB and SakuraMedia in the same compose: `http://qbittorrent:8080` |
+| Username / password | The qBittorrent WebUI credentials |
+| qBittorrent save root | `/downloads` — adjust this to your actual setup |
+| Backend download root | `/mnt/downloads` — the same download directory as seen by `sakuramedia`; it must be the same directory on the host |
+
+Click "Test Configuration" before saving to confirm that the directory mapping and hard links pass. A directory mapping failure usually means the two root directories do not point at the same physical directory.
+
+<Screenshot src="/images/guide-en/download-client-form.png" alt="Add download client form" caption="Interface illustration: when adding a download client, select the target media library and fill in the configuration fields provided by the plugin." />
+
+### 3. Configure an indexer and bind a download client
+
+Go to "System Settings → Indexers → Add". The "Feed URL" must be the full Torznab URL, not the home page of a site or aggregator:
+
+| Source | Feed URL | API Key |
+|---|---|---|
+| Jackett | The site's "Copy Torznab Feed" link | Copy it from the top-right corner of the dashboard |
+| Prowlarr | The RSS icon URL in the indexer list, shaped like `http://<host>:9696/<indexer-ID>/api?apikey=...` | The URL already contains `apikey`, so you can leave this empty |
+
+After saving, bind one or more download clients (the first one becomes the default download target), then click "Test Torznab Connectivity".
+
+### 4. Verify
+
+1. On the "Overview" page, run "Component Diagnostics" to confirm connectivity to the media library, indexers and JavDB; check the download client separately with "Test Configuration" on the download clients page.
+2. Subscribe to a movie and wait for the background task to look for resources.
+3. To actively verify the automatic flow, manually trigger "Auto-download missing subscribed movies" in the Task Center and check the run result. When no suitable resource exists, a completed run does not mean a successful download.
+
+See [Get your first movie](/manual/first-movie) for the full flow. Importing existing movies does not need this step; see [Import existing assets](/manual/import).
+
+## Optional: vector services and SigLIP2 hardware options
+
+Image search and similar movies rely on Qdrant and the SigLIP2 embedding service. The CPU image in the examples on this page works on AMD, Intel and ARM64 hosts. The SigLIP2 image already bundles the model and runtime — you do **not** need to download models, mount a model directory, or pre-scale images. On startup the service automatically picks an inference backend based on the runtimes installed in the image; no configuration is required.
+
+When the backend and the embedding service are in the same Compose project, no port mapping is needed; the backend reaches the service at `http://siglip2-embed:8080` by default.
+
+### Enabling on demand
+
+A basic deployment does not need either service. If you only want similar movies, start Qdrant and turn on "Similar Movies & Vector Service" in desktop advanced settings; if you want image search, deploy SigLIP2 as well and turn on "Image & Text Search". See the [Full Compose example](#full-compose-example) below. Restart the backend container after saving.
+
+Thumbnails and moment favorites are kept independently. Daily recommendations and moment recommendations still use other candidate signals after vector capabilities are turned off. Re-enabling keeps the existing index; if deletions or updates happened while it was off, rebuild the image search index in "System Settings → System Maintenance" and run "Movie Similarity Recalculation" in the Task Center.
+
+### Full Compose example
+
+Append these two services to the basic compose file above. A basic deployment does not need them; they are only required when you enable similar movies or image search. Enabling image search on ARM platforms is not recommended.
+
+```yaml
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    container_name: qdrant
+    restart: unless-stopped
+    environment:
+      QDRANT__SERVICE__HTTP_PORT: "6333"
+      QDRANT__LOG_LEVEL: "INFO"
+    volumes:
+      - ./sakuramedia-data/image-search-index:/qdrant/storage
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  siglip2-embed:
+    image: tinyping/siglip2-embed-service:cpu
+    container_name: siglip2-embed
+    restart: unless-stopped
+    environment:
+      CPU_CONCURRENCY: "1"
+      MALLOC_TRIM_THRESHOLD_: "131072"
+      # If memory is tight, try setting this to false to lower the memory used by text search.
+      TEXT_TOWER_ENABLED: "true"
+```
+
+### Intel integrated graphics
+
+For Linux amd64 hosts with Intel integrated graphics. Replace the `siglip2-embed` service above with:
+
+```yaml
+  siglip2-embed:
+    image: tinyping/siglip2-embed-service:intel
+    container_name: siglip2-embed
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      # Replace with the actual GID of the host's render group (getent group render)
+      - "0"
+    environment:
+      CPU_CONCURRENCY: "1"
+```
+
+Run `getent group render` on the host to look up the GID of the `render` group, then replace the number in `group_add` above with that GID (for example `- "105"`). Confirm that `/dev/dri` exists before starting the container.
+
+### NVIDIA CUDA
+
+The host needs the NVIDIA driver and `nvidia-container-toolkit` installed, and `nvidia-smi` must display the GPU correctly. Replace the service above with:
+
+```yaml
+  siglip2-embed:
+    image: tinyping/siglip2-embed-service:cuda
+    container_name: siglip2-embed
+    restart: unless-stopped
+    gpus: all
+    environment:
+      CPU_CONCURRENCY: "1"
+```
+
+If the container does not use the GPU after starting, first check whether `docker run --rm --gpus all nvidia/cuda:12.4.1-base-ubuntu22.04 nvidia-smi` succeeds, then check the NVIDIA Container Toolkit configuration.
+
+### Image search only: disable the text tower
+
+By default SigLIP2 loads both the image tower and the text tower. If you only search for similar images and do not need text-to-frame search, add this to the `environment` of `siglip2-embed`:
+
+```yaml
+      TEXT_TOWER_ENABLED: "false"
+```
+
+On startup the service skips the text encoder and tokenizer and keeps only the image tower, which lowers memory usage. Text-to-frame search then fails (the text endpoint returns 503), while image search, similar images and image indexing are unaffected. Set it back to `"true"` or delete the line and restart the container to restore it.
+
+### Deploying the embedding service on another host
+
+Port mapping is only needed when the backend and SigLIP2 are not on the same Compose network, for example by adding:
+
+```yaml
+    ports:
+      - "8080:8080"
+```
+
+Then, in desktop advanced settings, change the SigLIP2 address to a reachable HTTP address for that service, fill in the API key if needed, and restart the backend after saving. Qdrant likewise supports a remote address; when you use a remote service, you do not need to start the corresponding local container.
 
 ## Next steps
 
 - Import more movies: [Import existing assets](/manual/import)
-- Paths and hard links: [Container Paths and Hard Links](/guide/container-paths)
-- Image search / similar movies: [Advanced Deployment](/guide/docker)
+- Full subscription flow after automatic download: [Get your first movie](/manual/first-movie)
+- Image search usage: [Discover more from a single frame](/manual/image-search)
 - The 115 cloud drive and other plugins: [Recommended Plugins](/guide/plugins)
 - Fields and task schedules: [Configuration Reference](/guide/config), [Background Tasks](/guide/tasks)

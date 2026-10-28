@@ -68,27 +68,9 @@ A candidate must have an available source, a size between `1 GiB` and `40 GiB`, 
 
 Once the download provider returns `completed` and `completed_source_ref`, a background task hands that source to the target media library provider for import. When checking, confirm in order: the download client's state has been synced, the task carries the completed source reference, the media library provider configuration is usable, and the "Auto import completed downloads" task has not failed.
 
-## Paths and hard links
-
-### The source browser shows no existing movies during import
-
-Either the directory holding your existing movies is not mounted into the container, or the "Manual import root directory" is not a path inside the container. Confirm the `/media` mount in your compose file first, then follow [Container paths and hard links](/guide/container-paths). Configuration takes container paths, not host paths.
-
-### The download client's "Test configuration" says the two paths are not mapped to the same directory
-
-qBittorrent's "Save root directory" and SakuraMedia's "Backend download root directory" must point to the same host directory. Confirm each container's mounts first, then compare with the mapping table in [Container paths and hard links](/guide/container-paths). The path strings may differ, but the physical directory must be the same.
-
-### Hard links are unavailable, so imports are slow or use double the space
-
-Hard links require the source directory and the media library to be under the same mount point, and the host file system to support hard links. A common cause is mounting the source directory and the media library separately (for example `av` and `library`), or using exFAT or some SMB/NFS setups. See [Container paths and hard links](/guide/container-paths#why-not-mount-the-subdirectories-separately) for how to handle it.
-
 ### Media breaks after an in-place import
 
 In-place media references the source file directly. If the source file is moved, renamed or its content changes, the media breaks; deleting the media record in SakuraMedia does not delete the source file. Keep the file location fixed, or switch to the "Keep source files" import mode.
-
-### A download completed but was not imported automatically
-
-Check whether the download client's "Test configuration" passes, then confirm the task state includes the completed source, the media library provider is usable, and the "Auto import completed downloads" task has not failed. Wrong path mappings are a common cause. See [Auto download and indexers](/guide/auto-download) for configuration steps.
 
 ## Playback and decoding
 
@@ -132,16 +114,3 @@ A single clip's duration is limited by `media_clip_max_duration_seconds`, and ff
 
 Yes. A collection stores its video members and their order, and the client plays them in order; the same video can belong to several collections.
 
-## Tutorials
-
-- [User manual reading guide](/manual/)
-- [Subscription statuses and what to do](/manual/subscriptions)
-- [Import existing files](/manual/import)
-
-## Related pages
-
-- [Quick start](/guide/quick-start)
-- [Configuration](/guide/config)
-- [Background tasks](/guide/tasks)
-- [Common commands](/guide/commands)
-- [PornBox and ordinary videos](/guide/videos)

@@ -6,9 +6,7 @@ When movies already live on your NAS or cloud drive, you can import them directl
 
 Create the target media library under "System settings → Media library" and confirm the matching storage plugin is enabled. The browsable sources come from that media library's storage configuration, such as the manual import root directory of local storage.
 
-<Screenshot src="/images/guide-en/media-library-form.png" alt="Add media library form" caption="Interface sketch: add a media library in system settings; the fields come from the selected storage plugin." />
-
-Start with a small directory to verify the flow. JAV import needs to detect the movie number and scrape metadata and covers, so a clear movie number helps detection; network or metadata source failures can also affect the import.
+**Start with a small directory to verify the flow**. JAV import needs to detect the movie number and scrape metadata and covers (it does not rely on local NFO files; all metadata and covers come from built-in data sources), so a clear movie number helps detection; network or metadata source failures can also affect the import.
 
 ## Submit an import
 
@@ -26,12 +24,10 @@ Three import modes:
 | Delete source files after a successful import | Copy to the media library, then delete the source file on success (effectively a move) | Deleted |
 | In-place import | Neither copy nor hard link; the media references the source file directly | Untouched |
 
-On the same mount point, "Keep source files" can use hard links; across mount points or file systems it copies instead. In-place media depends on the source file's location and becomes invalid if the file is moved, renamed or changed. See [Container paths and hard links](/guide/container-paths#the-three-import-modes).
-
-The source browser shows what the storage plugin can reach. If a directory is missing, check the media library's source configuration and the server mounts; an arbitrary path on your own computer cannot replace a directory the server can reach. See [Container paths and hard links](/guide/container-paths) for the path rules.
+On the same mount point, "Keep source files" can use hard links; across mount points or file systems it copies instead. In-place media depends on the source file's location and becomes invalid if the file is moved, renamed or changed.
 
 ::: warning Handling of source files
-Choosing "Delete source files after a successful import" deletes the source files once the media is imported successfully. Confirm the selected source and import mode before submitting, especially for files still seeding or in use by other programs.
+Choosing "Delete source files after a successful import" deletes the source files once the media is imported successfully. This cannot be undone; use it only when you are sure you do not need the source files.
 :::
 
 ## Judge whether it worked
@@ -50,7 +46,3 @@ JAV file imports add the linked movies to your subscriptions, so they show up un
 | Skipped because the file is too small | Confirm whether it is a sample; adjust the minimum video size setting if you need to keep it |
 
 The current task details and the failed-entry entry points in media management show the reason; when "Manual match" appears, search for and verify the correct movie record before confirming. Do not match a file to an unrelated movie just to make the task pass.
-
-See [Configuration](/guide/config#media) for settings such as the minimum video size.
-
-Next: [Start watching](./playback).

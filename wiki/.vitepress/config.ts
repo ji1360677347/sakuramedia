@@ -19,11 +19,8 @@ const zhSidebar = [
     items: [
       { text: '介绍', link: '/zh-CN/guide/introduction' },
       { text: '快速开始', link: '/zh-CN/guide/quick-start' },
-      { text: '容器路径与硬链接', link: '/zh-CN/guide/container-paths' },
-      { text: '自动下载与索引器', link: '/zh-CN/guide/auto-download' },
       { text: '推荐插件', link: '/zh-CN/guide/plugins' },
       { text: '配置说明', link: '/zh-CN/guide/config' },
-      { text: '进阶部署', link: '/zh-CN/guide/docker' },
       { text: '后台任务', link: '/zh-CN/guide/tasks' },
       { text: '媒体存储迁移', link: '/zh-CN/guide/media-storage-transfer' },
       { text: '常用命令', link: '/zh-CN/guide/commands' },
@@ -84,11 +81,8 @@ const enSidebar = [
     items: [
       { text: 'Introduction', link: '/guide/introduction' },
       { text: 'Quick start', link: '/guide/quick-start' },
-      { text: 'Container paths and hard links', link: '/guide/container-paths' },
-      { text: 'Auto download and indexers', link: '/guide/auto-download' },
       { text: 'Recommended plugins', link: '/guide/plugins' },
       { text: 'Configuration', link: '/guide/config' },
-      { text: 'Advanced deployment', link: '/guide/docker' },
       { text: 'Background tasks', link: '/guide/tasks' },
       { text: 'Media storage transfer', link: '/guide/media-storage-transfer' },
       { text: 'Common commands', link: '/guide/commands' },

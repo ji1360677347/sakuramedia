@@ -12,7 +12,7 @@ Sign in to the desktop client, open "System settings" and check:
 | Download client | Receives download jobs | The correct target media library is selected |
 | Indexer | Searches for movie resources | A usable download client is bound |
 
-If nothing is configured yet, follow [Auto download and indexers](/guide/auto-download). If configuration exists, run "Component diagnostics" on the "Overview" page and fix connection problems for the affected components first.
+If nothing is configured yet, follow [Auto download and indexers](/guide/quick-start#optional-auto-download-and-indexers). If configuration exists, run "Component diagnostics" on the "Overview" page and fix connection problems for the affected components first.
 
 Resource lookup, download status sync and importing are handled by different background tasks. A deployed server needs the scheduler started; see [Background tasks](/guide/tasks) for the individual tasks.
 

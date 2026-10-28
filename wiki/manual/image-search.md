@@ -6,7 +6,7 @@ Search by image suits a situation like this: you like the scene in front of you,
 
 The system needs searchable images, a working embedding service and a vector index. Media thumbnails have to be generated before they can be indexed; plot images have their own indexing task too.
 
-On first use, check the relevant components on the "Overview" page, and check "Media thumbnail generation", "Search-by-image thumbnail vector index" and "Search-by-image plot image vector index" in the task center. See [Advanced deployment](/guide/docker) for deploying the services.
+On first use, check the relevant components on the "Overview" page, and check "Media thumbnail generation", "Search-by-image thumbnail vector index" and "Search-by-image plot image vector index" in the task center. See [Optional vector services and SigLIP2 hardware options](/guide/quick-start#optional-vector-services-and-siglip2-hardware-options) for deploying the services.
 
 This feature searches images already indexed by the system; it does not search the whole internet for you.
 

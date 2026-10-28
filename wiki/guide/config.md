@@ -1,6 +1,6 @@
 # Configuration Reference
 
-The configuration file lives at `sakuramedia-data/config/config.toml`. Every path in the configuration refers to a path inside the container. `/data` holds backend runtime data; provider paths such as media libraries and download directories are usually mounted under `/media` — see [Container Paths and Hard Links](/guide/container-paths) for how to fill them in.
+The configuration file lives at `sakuramedia-data/config/config.toml`. Every path in the configuration refers to a path inside the container. `/data` holds backend runtime data.
 
 ## Configuration overview
 
@@ -218,9 +218,9 @@ index_upsert_batch_size = 100
 
 Both switches are off by default on new deployments; when upgrading an older deployment, only missing switches are filled in as enabled, so values you have already saved are never overwritten. Mobile does not provide a settings form, but adjusts its entry points based on server capabilities.
 
-These fields control the SigLIP2 embedding service connection, search sessions and Qdrant index batching. The default address matches the `siglip2-embed` service name in the [Full Compose example](/guide/docker#full-compose-example); you only need to change the connection fields when the embedding service runs on another host, uses a different service name, or has authentication enabled.
+These fields control the SigLIP2 embedding service connection, search sessions and Qdrant index batching. The default address matches the `siglip2-embed` service name in the [Quick start](/guide/quick-start#full-compose-example); you only need to change the connection fields when the embedding service runs on another host, uses a different service name, or has authentication enabled.
 
-Text-to-frame search also requires the SigLIP2 container to load the text tower (loaded by default); if the container sets `TEXT_TOWER_ENABLED=false`, only image vectors are provided, text-to-frame search is unavailable, and image search is unaffected. See [SigLIP2 hardware options](/guide/docker) for details.
+Text-to-frame search also requires the SigLIP2 container to load the text tower (loaded by default); if the container sets `TEXT_TOWER_ENABLED=false`, only image vectors are provided, text-to-frame search is unavailable, and image search is unaffected. See [Optional vector services and SigLIP2 hardware options](/guide/quick-start#optional-vector-services-and-siglip2-hardware-options) for details.
 
 `index_upsert_batch_size` controls how many pending thumbnails and scene images the indexing task reads per round. The task keeps processing until both pending queues are empty; the parameter only limits the amount read per round and does not cap the total work of a single run.
 

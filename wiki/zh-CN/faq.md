@@ -68,27 +68,9 @@ docker exec -it --user app -w /app sakuramedia python -m src.start.commands rese
 
 下载 provider 返回 `completed` 和 `completed_source_ref` 后，后台任务会将该来源交给目标媒体库 provider 导入。检查时依次确认：下载器状态已同步、任务含完成来源引用、媒体库 provider 配置可用，以及「已完成下载自动导入」任务没有失败。
 
-## 路径与硬链接
-
-### 导入时来源浏览器看不到已有影片
-
-已有影片目录没有挂进容器，或者「手动导入根目录」填的不是容器内路径。先确认 compose 里的 `/media` 挂载，再对照[容器路径与硬链接](/zh-CN/guide/container-paths)填写。配置里填的是容器内路径，不是宿主机路径。
-
-### 下载器「测试配置」提示两个路径没有映射到同一目录
-
-qBittorrent 的「保存根目录」和 SakuraMedia 的「后端下载根目录」必须指向同一个宿主机目录。先确认两个容器各自的挂载，再对照[容器路径与硬链接](/zh-CN/guide/container-paths)的映射表。路径字符串可以不同，但物理目录必须相同。
-
-### 硬链接不可用，导入很慢或占双倍空间
-
-硬链接要求来源目录和媒体库在同一个挂载点下，并且宿主机文件系统支持硬链接。常见原因是把来源目录和媒体库分别挂载（例如 `av` 和 `library`），或使用了 exFAT、部分 SMB/NFS。处理方式见[容器路径与硬链接](/zh-CN/guide/container-paths#为什么不要分别挂子目录)。
-
 ### 原地导入后媒体失效
 
 原地导入的媒体直接引用源文件。源文件被移动、重命名或内容变化后，媒体会失效；删除 SakuraMedia 中的媒体记录不会删除源文件。需要固定文件位置，或改用「保留源文件」导入。
-
-### 下载完成但没有自动导入
-
-先看下载器「测试配置」是否通过，再确认任务状态包含完成来源、媒体库 provider 可用，以及「已完成下载自动导入」任务没有失败。路径映射错误是常见原因之一。配置步骤见[自动下载与索引器](/zh-CN/guide/auto-download)。
 
 ## 播放与解码
 
@@ -132,16 +114,3 @@ qBittorrent 的「保存根目录」和 SakuraMedia 的「后端下载根目录�
 
 可以。合集保存视频成员及顺序，播放时客户端按顺序播放；同一个视频可以加入多个合集。
 
-## 使用教程
-
-- [使用手册阅读导航](/zh-CN/manual/)
-- [订阅状态与处理方法](/zh-CN/manual/subscriptions)
-- [导入已有资源](/zh-CN/manual/import)
-
-## 相关页面
-
-- [快速开始](/zh-CN/guide/quick-start)
-- [配置说明](/zh-CN/guide/config)
-- [后台任务](/zh-CN/guide/tasks)
-- [常用命令](/zh-CN/guide/commands)
-- [普通视频与视频合集](/zh-CN/guide/videos)

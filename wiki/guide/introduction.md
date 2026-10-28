@@ -30,7 +30,7 @@ When you find a frame you like, you can also use "Similar Images" to find relate
 
 Organize movies with playlists, mark the frames and positions you want to revisit with moments, and save the ranges you like as standalone videos with clips. Moments and clips can each be added to their own collections, and clip collections support continuous playback.
 
-Generated clips remain after you delete the source media; moments depend on the source media, so deleting the media also deletes the associated moments. Choose the approach based on what you want to keep.
+Generated clips remain after you delete the source media; moments depend on the source media. Choose the approach based on what you want to keep.
 
 <Screenshot src="/images/readme-en/clips-page.png" alt="SakuraMedia clips page" caption="Clips are standalone video files that you can watch back to back as a collection." />
 

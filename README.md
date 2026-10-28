@@ -50,7 +50,7 @@ From finding and downloading movies to watching and organizing them, the current
 
 - 🔍 **Discovery and subscriptions**: Search by movie number or look up an actor by name; browse tags, rankings, and recommendations; subscribe to an actor to keep up with new releases (her whole catalog isn't downloaded automatically).
 - 📥 **Automatic download and import**: Once a movie is subscribed, SakuraMedia keeps looking for sources and downloads it through qBittorrent or 115 offline download; finished downloads are imported into the media library automatically, and movies with no source stay on the subscription list.
-- 📦 **Import and metadata**: Import from a local disk, a mounted NAS directory, or a 115 cloud drive; the movie number is detected and the title, cast, cover, and other metadata are scraped and filled in; if detection fails you can match manually.
+- 📦 **Import and metadata**: Import from a local disk or select cloud drives; the movie number is detected and the title, cast, cover, and other metadata are scraped and filled in; if detection fails you can match manually.
 
 ### Watching and keeping
 
@@ -163,7 +163,7 @@ A NAS is optional: the backend runs on any machine that can keep Docker running 
 
 | Combination | Storage | Download | Best for |
 | --- | --- | --- | --- |
-| 💾 Local + qBittorrent (bundled in the backend image) | Local disk / mounted NAS directory | qBittorrent | You have local space and want to keep movies in your own hands |
+| 💾 Local + qBittorrent (bundled in the backend image) | Local disk | qBittorrent | You have local space and want to keep movies in your own hands |
 | ☁️ 115 cloud drive + offline download | 115 cloud drive | 115 offline download | You'd rather not use local space; good for a mini PC, server, or VPS |
 | ☁️ Guangyapan cloud drive + cloud add | Guangyapan cloud drive | Guangyapan cloud add | You'd rather not use local space; good for a mini PC, server, or VPS |
 
@@ -179,16 +179,6 @@ Get the client from [GitHub Releases](https://github.com/tinypinglite/sakuramedi
 | macOS | `sakuramedia-macos-*-unsigned.dmg` | Unsigned; on first launch, right-click → Open, or allow it under "Privacy & Security" |
 | Android | `sakuramedia-android-*-release-signed.apk` | Install directly; the system may warn about unknown sources |
 | iOS | `sakuramedia-ios-*-sidestore-ready.ipa` | Requires iOS 15.0+ and installs through SideStore or a self-signing tool; if you haven't sideloaded before, start with the desktop client |
-
-> **Version compatibility**: client, backend, and plugins must be upgraded together. After downloading the client, check the minimum backend version in the matching release notes; mixing versions can cause API errors. Backend project: [tinypinglite/sakuramediabe](https://github.com/tinypinglite/sakuramediabe).
-
-## Quick start
-
-1. **Deploy the backend**: Follow [Quick start](https://tinypinglite.github.io/sakuramedia/guide/quick-start) to launch the backend with Docker Compose; the default port is `38000`. 4 CPU cores and 2GB or more of RAM are recommended, with runtime data on an SSD; if movies live in 115, you don't need a large local disk.
-2. **Download the client and sign in**: On first sign-in, enter the backend address, for example `http://your-ip:38000`; the default account is `account / account` — change the password right after signing in.
-3. **Create a media library and import movies**: The backend image ships with "Local Storage & qBittorrent", so once a library exists you can import movies already on the host; for automatic downloads, follow [Automatic downloads and indexers](https://tinypinglite.github.io/sakuramedia/guide/auto-download) to configure qBittorrent and an indexer (Jackett / Prowlarr).
-
-Full steps, path mapping, automatic downloads, and plugin choices are covered in [Quick start](https://tinypinglite.github.io/sakuramedia/guide/quick-start), [Container paths and hard links](https://tinypinglite.github.io/sakuramedia/guide/container-paths), [Automatic downloads and indexers](https://tinypinglite.github.io/sakuramedia/guide/auto-download), and [Recommended plugins](https://tinypinglite.github.io/sakuramedia/guide/plugins).
 
 ## Who it's for
 
@@ -233,3 +223,4 @@ The project doesn't need donations; stars, docs, plugins, and PRs are all help.
     </picture>
   </a>
 </p>
+
