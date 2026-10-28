@@ -41,6 +41,15 @@ example_plugin/
 {
   "plugin_id": "example_plugin",
   "display_name": "示例插件",
+  "display_name_i18n": {
+    "zh-CN": "示例插件",
+    "en": "Example plugin"
+  },
+  "description": "一句话说明插件用途，不超过 200 字。",
+  "description_i18n": {
+    "zh-CN": "一句话说明插件用途，不超过 200 字。",
+    "en": "One sentence about what the plugin does, at most 200 characters."
+  },
   "version": "1.0.0",
   "host_api_version": 12,
   "settings_model": "Settings",
@@ -506,12 +515,19 @@ These fields are a "source field plus optional `*_i18n` dict". The host resolves
 
 | Location | Fields |
 |---|---|
-| `manifest.json`, `PluginRegistration` | `display_name_i18n` (either one is enough; when both are provided, `register()` wins) |
+| `manifest.json`, `PluginRegistration` | `display_name_i18n` (either one is enough; when both are provided, `register()` wins); `manifest.json` may also declare `description` / `description_i18n`, which the plugin market uses for the plugin summary |
 | `JobDefinition` | `cli_help_i18n` |
 | Task parameter and settings JSON Schemas | `title_i18n` / `description_i18n` at any level, including `title_i18n` on combinator options such as `oneOf` |
 | Provider `ConfigField` | `label_i18n`, `description_i18n`, `hint_i18n` |
 | Media provider bundle | `display_name_i18n` |
 | Ranking `PluginRankingSource`, `PluginRankingBoard` | `name_i18n` |
+
+The `description` / `description_i18n` fields of `manifest.json` are used by the plugin market only: the market
+index repository reads the manifest of each plugin's latest release every day and syncs the display name and
+summary (including their translations) into `index.json`; the client resolves them as
+"current language → `zh-CN` → source text". Both fields are optional — when a plugin does not declare them the
+market keeps its own copy, so the English UI shows the source text. Declaring them requires a new plugin release
+before the market index picks up the new copy.
 
 Pydantic models carry the dicts through `json_schema_extra`, generated at import time by the plugin's own catalog reader:
 

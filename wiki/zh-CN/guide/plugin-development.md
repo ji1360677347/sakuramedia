@@ -41,6 +41,15 @@ example_plugin/
 {
   "plugin_id": "example_plugin",
   "display_name": "示例插件",
+  "display_name_i18n": {
+    "zh-CN": "示例插件",
+    "en": "Example plugin"
+  },
+  "description": "一句话说明插件用途，不超过 200 字。",
+  "description_i18n": {
+    "zh-CN": "一句话说明插件用途，不超过 200 字。",
+    "en": "One sentence about what the plugin does, at most 200 characters."
+  },
   "version": "1.0.0",
   "host_api_version": 12,
   "settings_model": "Settings",
@@ -506,12 +515,17 @@ example_plugin/
 
 | 位置 | 字段 |
 |---|---|
-| `manifest.json`、`PluginRegistration` | `display_name_i18n`（两处给任一即可，同时提供时以 `register()` 为准） |
+| `manifest.json`、`PluginRegistration` | `display_name_i18n`（两处给任一即可，同时提供时以 `register()` 为准）；`manifest.json` 另可声明 `description` / `description_i18n`，供插件市场展示简介 |
 | `JobDefinition` | `cli_help_i18n` |
 | 任务参数、设置项的 JSON Schema | 任意层级的 `title_i18n`、`description_i18n`，含 `oneOf` 等组合选项的 `title_i18n` |
 | Provider `ConfigField` | `label_i18n`、`description_i18n`、`hint_i18n` |
 | 媒体 Provider bundle | `display_name_i18n` |
 | 排行榜 `PluginRankingSource`、`PluginRankingBoard` | `name_i18n` |
+
+`manifest.json` 的 `description` / `description_i18n` 只被插件市场使用：市场索引仓库每天从各插件的最新
+Release 里读取 manifest，把展示名与简介（含多语言版本）同步进 `index.json`，客户端按
+「当前语言 → `zh-CN` → 原文」取值。这两个字段都是可选的，不声明时市场沿用自己的文案，英文界面下会显示原文；
+声明后要发一版插件，市场索引才会同步到新文案。
 
 Pydantic 模型通过 `json_schema_extra` 携带字典，字典在导入期由插件自己的语言包读取器生成：
 
