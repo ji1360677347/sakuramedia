@@ -18,21 +18,28 @@ outline: [2, 3]
 
 ### 1. 准备目录
 
-在一个固态硬盘(推荐)的空目录下，执行以下命令或通过NAS的文件管理中执行。
+#### 1.1 准备运行数据目录
 
-​	a. 创建 目录 `sakuramedia-data` 
+首先在固态硬盘(推荐)中建立一个空的目录，并在里面建立一个 `sakuramedia-data` 目录，这个目录将用来存储 `sakuramedia` 运行时的文件，不包含媒体文件。
 
-​	b. 在你已有影片的父目录创建一个新的目录 `media`，这里假设你已有影片在 `/mnt/av`下，那么需要在`/mnt/`下建立一个`media`目录。 
+#### 1.2 准备媒体文件存放目录
+
+这里假设你已经有一部分影片了，存放在 `/mnt/av` 下，我们需要在 `av` 这个目录的父目录下建一个 `media` 目录，之后我们添加媒体库时就用这个目录，之后自动下载和导入的影片都会存放在这个目录，**请不要手动往这个目录添加文件或修改其中的文件**
+
+#### 1.3 准备qBittorrent下载的目录
+
+为了在导入时能够正确的硬链接文件，建议将 qBittorrent 的下载目录设置到和 `media` 目录也就是媒体库根目录的同级目录下。比如 `/mnt/downloads`
 
 最终的目录结构示例：
 
 ```text
 /mnt
 ├── av/          # 已有影片（示例名，换成你的实际目录）
-└── media/     # 之后创建sakuramedia媒体库用
+├── media/       # 之后创建 sakuramedia 媒体库用
+└── downloads/   # qBittorrent 容器的下载目录
 ```
 
-`av` 和 `media`  在同一个宿主机目录下，后面只挂载它们的父目录 `/mnt`。这样导入时两个目录在同一个挂载点，导入时才能使用硬链接。
+按这种目录设计，在下一步的挂载中**仅需要挂载 `/mnt`** 就可以同时把已有影片目录和后续媒体库目录以及 qBittorrent 下载目录一起挂载进去。
 
 ### 2. 写 `compose.yaml`
 
@@ -161,7 +168,7 @@ http://你的IP:38000
 
 ### 1. 让 qBittorrent 和 SakuraMedia 看到同一个下载目录
 
-上面的基础部署把媒体库目录设为 `/mnt/media`，并把包含它的父目录 `/mnt` 挂载进了 `sakuramedia` 容器。qBittorrent 容器的下载目录也需要位于同一个挂载点下；这里假设 qBittorrent 中的 `/downloads` 对应宿主机的 `/mnt/downloads`。这样两个容器内部看到的都是 `/mnt/downloads`。
+上面的基础部署把媒体库目录设为 `/mnt/media`，并把包含它的父目录 `/mnt` 挂载进了 `sakuramedia` 容器。qBittorrent 容器的下载目录也需要位于同一个挂载点下的 `/mnt/downloads`；这里假设你的 qBittorrent 也是 Docker 部署的，它的下载设置中下载目录是 `/downloads`，那么要确保 **qBittorrent 中的这个下载目录对应到宿主机就是 `/mnt/downloads`**。
 
 ### 2. 添加下载器
 

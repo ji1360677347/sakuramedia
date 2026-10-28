@@ -18,21 +18,28 @@ If you only want to get import and playback working first, completing stages 1 a
 
 ### 1. Prepare the directories
 
-In an empty directory on an SSD (recommended), run the following commands, or create the directories through your NAS file manager.
+#### 1.1 Prepare the runtime data directory
 
-a. Create the directory `sakuramedia-data`.
+First create an empty directory on an SSD (recommended) and create a `sakuramedia-data` directory inside it. This directory holds the files `sakuramedia` needs at runtime; it does not contain media files.
 
-b. Create a new directory named `media` under the parent directory of your existing movies. For example, if your existing movies are in `/mnt/av`, create a `media` directory under `/mnt/`.
+#### 1.2 Prepare the media file directory
+
+This guide assumes you already have some movies, stored under `/mnt/av`. Create a `media` directory in the parent directory of `av`; that is the directory you will use when adding the media library later, and every movie that is downloaded automatically or imported afterwards will be stored there. **Do not manually add files to this directory or modify the files inside it.**
+
+#### 1.3 Prepare the qBittorrent download directory
+
+So that imports can hard link files correctly, set the qBittorrent download directory as a sibling of the `media` directory — that is, of the media library root. For example `/mnt/downloads`.
 
 Final directory layout example:
 
 ```text
 /mnt
 ├── av/          # Existing movies (example name; replace with your actual directory)
-└── media/       # For the SakuraMedia media library you will create later
+├── media/       # For the SakuraMedia media library you will create later
+└── downloads/   # The download directory of the qBittorrent container
 ```
 
-`av` and `media` are under the same host directory; later you mount only their parent directory `/mnt`. That way both directories are on the same mount point during import, so hard links are available.
+With this layout, the mount in the next step only needs to mount `/mnt`, which brings the existing movies directory, the media library directory and the qBittorrent download directory in at the same time.
 
 ### 2. Write `compose.yaml`
 
@@ -161,7 +168,7 @@ After completing the deployment and media library creation above, SakuraMedia ne
 
 ### 1. Make qBittorrent and SakuraMedia see the same download directory
 
-The basic deployment above sets the media library directory to `/mnt/media` and mounts the parent directory `/mnt` into the `sakuramedia` container. The qBittorrent container's download directory also needs to be on the same mount point; this example assumes that `/downloads` inside qBittorrent maps to the host directory `/mnt/downloads`. That way both containers work with the same host directory.
+The basic deployment above sets the media library directory to `/mnt/media` and mounts its parent directory `/mnt` into the `sakuramedia` container. The qBittorrent container's download directory must also live at `/mnt/downloads` under that same mount point; this assumes your qBittorrent is deployed with Docker as well and its download directory setting is `/downloads`, so make sure **the download directory inside qBittorrent maps to `/mnt/downloads` on the host**.
 
 ### 2. Add a download client
 
