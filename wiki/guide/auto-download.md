@@ -22,16 +22,16 @@ Recommended qBittorrent container mount:
 
 ```yaml
 volumes:
-  - ${STORAGE_ROOT}/downloads:/media/downloads
+  - /mnt/volume1/media/downloads:/media/downloads
 ```
 
-If the download directory does not exist on the host yet, create it first (using the example path from Quick Start; the real path follows your `STORAGE_ROOT`):
+If the download directory does not exist on the host yet, create it first (the path follows the Quick Start example; replace it with your own media root):
 
 ```bash
 mkdir -p /mnt/volume1/media/downloads
 ```
 
-SakuraMedia already mounts `${STORAGE_ROOT}:/media`, so it sees `/media/downloads`. In qBittorrent, go to "Settings → Downloads → Default Save Path" and enter `/media/downloads`.
+SakuraMedia already mounts `/mnt/volume1/media:/media`, so it sees `/media/downloads`. In qBittorrent, go to "Settings → Downloads → Default Save Path" and enter `/media/downloads`.
 
 If qBittorrent is not running in Docker or its paths cannot be changed, see [qBittorrent paths for automatic downloading](/guide/container-paths#qbittorrent-paths-for-automatic-downloading).
 

@@ -56,12 +56,13 @@ outline: [2, 4]
     devices:
       - /dev/dri:/dev/dri
     group_add:
-      - "${RENDER_GID:-0}"
+      # 换成宿主机 render 组的实际 GID（getent group render）
+      - "0"
     environment:
       CPU_CONCURRENCY: "1"
 ```
 
-在宿主机执行 `getent group render` 查看 `render` 组的 GID，并在同目录的 `.env` 文件写入 `RENDER_GID=实际GID`。确认 `/dev/dri` 存在后再启动容器。
+在宿主机执行 `getent group render` 查看 `render` 组的 GID，把上面 `group_add` 里的数字改成该 GID（例如 `- "105"`）。确认 `/dev/dri` 存在后再启动容器。
 
 ## NVIDIA CUDA
 

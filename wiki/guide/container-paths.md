@@ -27,7 +27,7 @@ The `/data/...` paths in `config.toml` are the backend's own runtime data; the m
 Host:
 
 ```text
-${STORAGE_ROOT}/
+/mnt/volume1/media/     # Media root (example path; use your own directory)
 ├── av/          # Existing movies (example name; use your own directory)
 └── library/     # SakuraMedia media library
 ```
@@ -37,15 +37,15 @@ Container mounts:
 ```yaml
 volumes:
   - ./sakuramedia-data:/data
-  - ${STORAGE_ROOT}:/media
+  - /mnt/volume1/media:/media
 ```
 
 Media library form:
 
 | Field | Value | Host equivalent |
 |---|---|---|
-| Media library path | `/media/library` | `${STORAGE_ROOT}/library` |
-| Manual import root | `/media/av` | `${STORAGE_ROOT}/av` |
+| Media library path | `/media/library` | `/mnt/volume1/media/library` |
+| Manual import root | `/media/av` | `/mnt/volume1/media/av` |
 
 `/media/av` is a path inside the container. If the existing movies directory is not mounted into the container, the source browser cannot see it and you cannot import from it.
 
@@ -56,8 +56,8 @@ Incorrect example:
 ```yaml
 # SakuraMedia
 volumes:
-  - ${STORAGE_ROOT}/av:/media/av
-  - ${STORAGE_ROOT}/library:/media/library
+  - /mnt/volume1/media/av:/media/av
+  - /mnt/volume1/media/library:/media/library
 ```
 
 They look like they are both under `/media`, but Docker treats them as two independent mount points. When importing with "Keep source file", a hard link cannot be created across mount points, so files are copied instead.
@@ -66,7 +66,7 @@ The correct approach is to mount only the parent directory:
 
 ```yaml
 volumes:
-  - ${STORAGE_ROOT}:/media
+  - /mnt/volume1/media:/media
 ```
 
 Now `/media/av` and `/media/library` are on the same mount point, and hard links work.
@@ -116,10 +116,10 @@ qBittorrent only needs to see the download directory:
 
 ```yaml
 volumes:
-  - ${STORAGE_ROOT}/downloads:/media/downloads
+  - /mnt/volume1/media/downloads:/media/downloads
 ```
 
-SakuraMedia already mounts `${STORAGE_ROOT}:/media`, so both sides see `/media/downloads`. Enter `/media/downloads` as qBittorrent's default save path, and `/media/downloads` for both root directories of the download client.
+SakuraMedia already mounts `/mnt/volume1/media:/media`, so both sides see `/media/downloads`. Enter `/media/downloads` as qBittorrent's default save path, and `/media/downloads` for both root directories of the download client.
 
 ### qBittorrent is a NAS package and its paths cannot be changed
 
@@ -177,7 +177,7 @@ Find the same file in the output; the two hard links should share an inode and t
 | Keep source file is slow and disk usage doubles | The two directories are on different mount points; the filesystem does not support hard links | Mount a single parent directory; switch to a filesystem that supports hard links such as ext4/btrfs/xfs |
 | Media breaks after importing in place | The source file was moved, renamed or modified | Keep the source file's location and content unchanged |
 | The download client reports that the two paths are not mapped to the same directory | The root directories in qB and the backend are not the same physical directory | Check both mounts against the qB mapping table above |
-| Permission errors | PUID/PGID do not match the directory owner | Align PUID/PGID, or make sure SakuraMedia can read and write `${STORAGE_ROOT}`; for automatic downloading, qB must also be able to read and write the download directory |
+| Permission errors | PUID/PGID do not match the directory owner | Align PUID/PGID, or make sure SakuraMedia can read and write `/mnt/volume1/media`; for automatic downloading, qB must also be able to read and write the download directory |
 | The path configuration is rejected | The path contains a symbolic link | Use the real directory instead of a symlink pointing at the media directory |
 
 ## 115 and other providers

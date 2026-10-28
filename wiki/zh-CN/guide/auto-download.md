@@ -22,16 +22,16 @@ outline: [2, 3]
 
 ```yaml
 volumes:
-  - ${STORAGE_ROOT}/downloads:/media/downloads
+  - /mnt/volume1/media/downloads:/media/downloads
 ```
 
-如果宿主机上还没有下载目录，先创建它（按快速开始的示例路径，实际路径以你的 `STORAGE_ROOT` 为准）：
+如果宿主机上还没有下载目录，先创建它（路径示例沿用快速开始，把下面的路径换成你的媒体根目录）：
 
 ```bash
 mkdir -p /mnt/volume1/media/downloads
 ```
 
-SakuraMedia 已经挂载了 `${STORAGE_ROOT}:/media`，所以它看到的是 `/media/downloads`。在 qBittorrent「设置 → 下载 → 默认保存路径」中填 `/media/downloads`。
+SakuraMedia 已经挂载了 `/mnt/volume1/media:/media`，所以它看到的是 `/media/downloads`。在 qBittorrent「设置 → 下载 → 默认保存路径」中填 `/media/downloads`。
 
 qBittorrent 不是 Docker 或路径改不了时，见[容器路径与硬链接](/zh-CN/guide/container-paths#自动下载时的-qbittorrent-路径)。
 

@@ -37,15 +37,9 @@ mkdir -p /mnt/volume1/media/library
 
 `av` 和 `library` 在同一个宿主机目录下，后面只挂载它们的父目录 `/mnt/volume1/media`。这样导入时两个目录在同一个挂载点，选择「保留源文件」才能使用硬链接。
 
-### 2. 写 `.env` 和 `compose.yaml`
+### 2. 写 `compose.yaml`
 
-在 `sakuramedia/` 目录中新建 `.env`：
-
-```bash
-STORAGE_ROOT=/mnt/volume1/media
-```
-
-再新建 `compose.yaml`：
+在 `sakuramedia/` 目录中新建 `compose.yaml`：
 
 ```yaml
 services:
@@ -88,13 +82,14 @@ services:
       MALLOC_TRIM_THRESHOLD_: "131072"
     volumes:
       - ./sakuramedia-data:/data
-      - ${STORAGE_ROOT}:/media
+      # 宿主机上包含「已有影片目录」和「媒体库目录」的父目录，按实际情况修改
+      - /mnt/volume1/media:/media
 ```
 
 ::: danger 保存前必须修改
-- `STORAGE_ROOT` 改成宿主机上包含「已有影片目录」和「媒体库目录」的父目录，必须是绝对路径。
+- 把 `/mnt/volume1/media` 改成宿主机上包含「已有影片目录」和「媒体库目录」的父目录，必须是绝对路径。
 - 不使用中国时区时修改 `TZ`。
-- 如果 SakuraMedia 以非 root 运行，确保 PUID/PGID 对 `${STORAGE_ROOT}` 有读写权限。
+- 如果 SakuraMedia 以非 root 运行，确保 PUID/PGID 对 `/mnt/volume1/media` 有读写权限。
 :::
 
 SakuraMedia 的 `/data` 是后端运行数据，`/media` 才是媒体数据。不要把媒体库放到 `/data` 下面。
@@ -129,17 +124,17 @@ http://你的IP:38000
 
 | 字段 | 填写 | 对应宿主机目录 |
 |---|---|---|
-| 媒体库路径 | `/media/library` | `${STORAGE_ROOT}/library` |
-| 手动导入根目录 | `/media/av` | `${STORAGE_ROOT}/av` |
+| 媒体库路径 | `/media/library` | `/mnt/volume1/media/library` |
+| 手动导入根目录 | `/media/av` | `/mnt/volume1/media/av` |
 
 媒体库路径是影片导入后的最终目录；手动导入根目录是浏览已有文件时使用的范围。
 
-`/media/av` 是容器内路径，对应宿主机上的 `${STORAGE_ROOT}/av`。已有影片目录必须挂进容器，来源浏览器里才能看到它。如果你已有目录叫别的名字，把 `/media/av` 换成 `/media/<实际目录名>`。
+`/media/av` 是容器内路径，对应宿主机上的 `/mnt/volume1/media/av`。已有影片目录必须挂进容器，来源浏览器里才能看到它。如果你已有目录叫别的名字，把 `/media/av` 换成 `/media/<实际目录名>`。
 
 ::: tip 路径映射
-- 宿主机 `${STORAGE_ROOT}` → 容器 `/media`
-- 已有影片 `${STORAGE_ROOT}/av` → 容器 `/media/av`
-- 新媒体库 `${STORAGE_ROOT}/library` → 容器 `/media/library`
+- 宿主机 `/mnt/volume1/media` → 容器 `/media`
+- 已有影片 `/mnt/volume1/media/av` → 容器 `/media/av`
+- 新媒体库 `/mnt/volume1/media/library` → 容器 `/media/library`
 
 完整规则见[容器路径与硬链接](/zh-CN/guide/container-paths)。
 :::

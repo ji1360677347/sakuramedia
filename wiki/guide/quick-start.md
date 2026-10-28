@@ -37,15 +37,9 @@ Example directory layout:
 
 `av` and `library` sit under the same host directory; later you mount only their parent directory `/mnt/volume1/media`. That way both directories are on the same mount point during import, which is what makes hard links available when you choose "Keep source file".
 
-### 2. Write `.env` and `compose.yaml`
+### 2. Write `compose.yaml`
 
-Create a `.env` file inside the `sakuramedia/` directory:
-
-```bash
-STORAGE_ROOT=/mnt/volume1/media
-```
-
-Then create `compose.yaml`:
+Create `compose.yaml` inside the `sakuramedia/` directory:
 
 ```yaml
 services:
@@ -88,13 +82,14 @@ services:
       MALLOC_TRIM_THRESHOLD_: "131072"
     volumes:
       - ./sakuramedia-data:/data
-      - ${STORAGE_ROOT}:/media
+      # Host parent directory that holds the existing movies and the media library; change it to your own path
+      - /mnt/volume1/media:/media
 ```
 
 ::: danger Must be changed before saving
-- Change `STORAGE_ROOT` to the host parent directory that contains both the "existing movies directory" and the "media library directory". It must be an absolute path.
+- Change `/mnt/volume1/media` to the host parent directory that contains both the "existing movies directory" and the "media library directory". It must be an absolute path.
 - Change `TZ` if you are not in the China time zone.
-- If SakuraMedia runs as a non-root user, make sure PUID/PGID have read and write access to `${STORAGE_ROOT}`.
+- If SakuraMedia runs as a non-root user, make sure PUID/PGID have read and write access to `/mnt/volume1/media`.
 :::
 
 SakuraMedia's `/data` holds backend runtime data, while `/media` holds media data. Never put the media library under `/data`.
@@ -129,17 +124,17 @@ Go to "System Settings → Media Library → Add", choose "Local Storage & qBitt
 
 | Field | Value | Host directory |
 |---|---|---|
-| Media library path | `/media/library` | `${STORAGE_ROOT}/library` |
-| Manual import root | `/media/av` | `${STORAGE_ROOT}/av` |
+| Media library path | `/media/library` | `/mnt/volume1/media/library` |
+| Manual import root | `/media/av` | `/mnt/volume1/media/av` |
 
 The media library path is the final destination for imported movies; the manual import root is the scope used when browsing existing files.
 
-`/media/av` is a path inside the container and maps to `${STORAGE_ROOT}/av` on the host. The existing movies directory must be mounted into the container, otherwise it will not appear in the source browser. If your directory has a different name, replace `/media/av` with `/media/<actual-directory-name>`.
+`/media/av` is a path inside the container and maps to `/mnt/volume1/media/av` on the host. The existing movies directory must be mounted into the container, otherwise it will not appear in the source browser. If your directory has a different name, replace `/media/av` with `/media/<actual-directory-name>`.
 
 ::: tip Path mapping
-- Host `${STORAGE_ROOT}` → container `/media`
-- Existing movies `${STORAGE_ROOT}/av` → container `/media/av`
-- New media library `${STORAGE_ROOT}/library` → container `/media/library`
+- Host `/mnt/volume1/media` → container `/media`
+- Existing movies `/mnt/volume1/media/av` → container `/media/av`
+- New media library `/mnt/volume1/media/library` → container `/media/library`
 
 See [Container Paths and Hard Links](/guide/container-paths) for the full rules.
 :::

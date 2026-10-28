@@ -56,12 +56,13 @@ For Linux amd64 hosts with Intel integrated graphics. Replace the `siglip2-embed
     devices:
       - /dev/dri:/dev/dri
     group_add:
-      - "${RENDER_GID:-0}"
+      # Replace with the actual GID of the host's render group (getent group render)
+      - "0"
     environment:
       CPU_CONCURRENCY: "1"
 ```
 
-Run `getent group render` on the host to look up the GID of the `render` group, then write `RENDER_GID=<actual GID>` into the `.env` file in the same directory. Confirm that `/dev/dri` exists before starting the container.
+Run `getent group render` on the host to look up the GID of the `render` group, then replace the number in `group_add` above with that GID (for example `- "105"`). Confirm that `/dev/dri` exists before starting the container.
 
 ## NVIDIA CUDA
 

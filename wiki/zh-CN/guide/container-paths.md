@@ -27,7 +27,7 @@ outline: [2, 3]
 宿主机：
 
 ```text
-${STORAGE_ROOT}/
+/mnt/volume1/media/     # 媒体根目录（示例路径，换成你的实际目录）
 ├── av/          # 已有影片（示例名，换成你的实际目录）
 └── library/     # SakuraMedia 媒体库
 ```
@@ -37,15 +37,15 @@ ${STORAGE_ROOT}/
 ```yaml
 volumes:
   - ./sakuramedia-data:/data
-  - ${STORAGE_ROOT}:/media
+  - /mnt/volume1/media:/media
 ```
 
 媒体库表单：
 
 | 字段 | 填写 | 对应宿主机 |
 |---|---|---|
-| 媒体库路径 | `/media/library` | `${STORAGE_ROOT}/library` |
-| 手动导入根目录 | `/media/av` | `${STORAGE_ROOT}/av` |
+| 媒体库路径 | `/media/library` | `/mnt/volume1/media/library` |
+| 手动导入根目录 | `/media/av` | `/mnt/volume1/media/av` |
 
 `/media/av` 是容器内路径。已有影片目录没有挂进容器时，来源浏览器里看不到它，也无法导入。
 
@@ -56,8 +56,8 @@ volumes:
 ```yaml
 # SakuraMedia
 volumes:
-  - ${STORAGE_ROOT}/av:/media/av
-  - ${STORAGE_ROOT}/library:/media/library
+  - /mnt/volume1/media/av:/media/av
+  - /mnt/volume1/media/library:/media/library
 ```
 
 看起来都在 `/media` 下，但 Docker 会把它们当成两个独立的挂载点。导入时选择「保留源文件」无法跨挂载点创建硬链接，只能复制文件。
@@ -66,7 +66,7 @@ volumes:
 
 ```yaml
 volumes:
-  - ${STORAGE_ROOT}:/media
+  - /mnt/volume1/media:/media
 ```
 
 这样 `/media/av` 和 `/media/library` 在同一个挂载点下，硬链接才能工作。
@@ -116,10 +116,10 @@ qBittorrent 只需要看到下载目录：
 
 ```yaml
 volumes:
-  - ${STORAGE_ROOT}/downloads:/media/downloads
+  - /mnt/volume1/media/downloads:/media/downloads
 ```
 
-SakuraMedia 已经挂载 `${STORAGE_ROOT}:/media`，所以两边看到的都是 `/media/downloads`。在 qBittorrent 的默认保存路径中也填 `/media/downloads`，下载器两个根目录都填 `/media/downloads`。
+SakuraMedia 已经挂载 `/mnt/volume1/media:/media`，所以两边看到的都是 `/media/downloads`。在 qBittorrent 的默认保存路径中也填 `/media/downloads`，下载器两个根目录都填 `/media/downloads`。
 
 ### qBittorrent 是 NAS 套件，路径改不了
 
@@ -177,7 +177,7 @@ ls -alhi /path/to/library /path/to/av
 | 保留源文件很慢、磁盘占用翻倍 | 两个目录不在同一个挂载点；文件系统不支持硬链接 | 改成一个父目录挂载；换 ext4/btrfs/xfs 等支持硬链接的文件系统 |
 | 原地导入后媒体失效 | 源文件被移动、重命名或修改 | 保持源文件位置和内容不变 |
 | 下载器提示两个路径没有映射到同一目录 | qB 和后端的根目录不是同一个物理目录 | 对照上面的 qB 映射表，检查两端挂载 |
-| 权限错误 | PUID/PGID 与目录属主不一致 | 统一 PUID/PGID，或确保 SakuraMedia 能读写 `${STORAGE_ROOT}`；自动下载时 qB 也要能读写下载目录 |
+| 权限错误 | PUID/PGID 与目录属主不一致 | 统一 PUID/PGID，或确保 SakuraMedia 能读写 `/mnt/volume1/media`；自动下载时 qB 也要能读写下载目录 |
 | 路径配置被拒绝 | 路径中包含符号链接 | 使用真实目录，不要用符号链接指向媒体目录 |
 
 ## 115 和其他 provider
