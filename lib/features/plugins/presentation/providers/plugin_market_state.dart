@@ -35,10 +35,13 @@ class PluginMarketState {
   }
 
   bool _matches(PluginMarketItemDto plugin, String query) {
-    return plugin.displayName.toLowerCase().contains(query) ||
-        plugin.pluginId.toLowerCase().contains(query) ||
-        plugin.description.toLowerCase().contains(query) ||
-        plugin.author.toLowerCase().contains(query);
+    // 搜索匹配所有语言变体（中文名、英文名、中英文简介），关键词过滤不依赖
+    // 当前语言，切换界面语言也不需要重新拉取索引。
+    return plugin.pluginId.toLowerCase().contains(query) ||
+        plugin.author.toLowerCase().contains(query) ||
+        plugin.searchTexts.any(
+          (text) => text.toLowerCase().contains(query),
+        );
   }
 
   PluginMarketState copyWith({

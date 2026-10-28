@@ -1,3 +1,5 @@
+import 'package:sakuramedia/app/language/app_language.dart';
+import 'package:sakuramedia/app/language/localized_text.dart';
 import 'package:sakuramedia/core/json/json_parse.dart';
 
 /// 插件市场索引（`index.json`）整体结构。
@@ -40,6 +42,8 @@ class PluginMarketItemDto {
     this.categories = const <String>[],
     this.official = false,
     this.latest,
+    this.displayNameI18n = const <String, String>{},
+    this.descriptionI18n = const <String, String>{},
   });
 
   final String pluginId;
@@ -52,6 +56,12 @@ class PluginMarketItemDto {
   final List<String> categories;
   final bool official;
   final PluginMarketReleaseDto? latest;
+
+  /// 展示名的多语言翻译（键为语言标签）；缺失时回退 [displayName]。
+  final Map<String, String> displayNameI18n;
+
+  /// 简介的多语言翻译（键为语言标签）；缺失时回退 [description]。
+  final Map<String, String> descriptionI18n;
 
   /// 项目主页地址：`homepage` 合法时优先，否则回退 GitHub 仓库地址。
   ///
@@ -78,12 +88,41 @@ class PluginMarketItemDto {
       iconUrl: asStringOrNull(json['icon'], trim: true),
       categories: asStringList(json['categories'], trim: true),
       official: json['official'] == true,
+      displayNameI18n: asStringMap(json['display_name_i18n'], trim: true),
+      descriptionI18n: asStringMap(json['description_i18n'], trim: true),
       latest: switch (asMapOrNull(json['latest'])) {
         final map? => PluginMarketReleaseDto.fromJson(map),
         null => null,
       },
     );
   }
+}
+
+/// 市场条目的展示文案：按当前语言解析名称与简介，缺失时回退索引里的原文。
+extension PluginMarketItemDisplay on PluginMarketItemDto {
+  /// 当前语言下的插件名。
+  String localizedDisplayName(AppLanguage language) => resolveLocalizedText(
+    translations: displayNameI18n,
+    fallback: displayName,
+    language: language,
+  );
+
+  /// 当前语言下的插件简介。
+  String localizedDescription(AppLanguage language) => resolveLocalizedText(
+    translations: descriptionI18n,
+    fallback: description,
+    language: language,
+  );
+
+  /// 搜索可命中的全部文案变体：各语言的名称与简介。
+  ///
+  /// 关键词过滤不依赖当前语言，切换界面语言后无需重新拉取索引也能搜到。
+  Iterable<String> get searchTexts => <String>[
+    displayName,
+    description,
+    ...displayNameI18n.values,
+    ...descriptionI18n.values,
+  ];
 }
 
 /// 市场索引中插件的最新 Release 信息（由索引仓库自动同步）。

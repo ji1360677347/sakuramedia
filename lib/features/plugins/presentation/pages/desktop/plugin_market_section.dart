@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sakuramedia/app/language/app_language.dart';
+import 'package:sakuramedia/app/language/providers/language_providers.dart';
 import 'package:sakuramedia/core/network/api_error_message.dart';
 import 'package:sakuramedia/features/plugins/data/dto/plugin_dto.dart';
 import 'package:sakuramedia/features/plugins/data/dto/plugin_market_dto.dart';
@@ -55,6 +57,7 @@ class _DesktopPluginMarketSectionState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final asyncMarket = ref.watch(pluginMarketProvider);
+    final language = ref.watch(appLanguageControllerProvider);
     final installedById = <String, PluginSummaryDto>{
       for (final plugin
           in ref.watch(pluginsProvider).value?.plugins ??
@@ -81,7 +84,13 @@ class _DesktopPluginMarketSectionState
         : asyncMarket.value!;
     return AppSkeletonizer(
       enabled: isLoading,
-      child: _buildLoaded(context, state, installedById, asyncMarket.isLoading),
+      child: _buildLoaded(
+        context,
+        state,
+        installedById,
+        asyncMarket.isLoading,
+        language,
+      ),
     );
   }
 
@@ -90,6 +99,7 @@ class _DesktopPluginMarketSectionState
     PluginMarketState state,
     Map<String, PluginSummaryDto> installedById,
     bool isRefreshing,
+    AppLanguage language,
   ) {
     final spacing = context.appSpacing;
     final l10n = AppLocalizations.of(context);
@@ -110,6 +120,8 @@ class _DesktopPluginMarketSectionState
       rows.add(
         _MarketPluginRow(
           plugin: plugin,
+          displayName: plugin.localizedDisplayName(language),
+          description: plugin.localizedDescription(language),
           status: pluginMarketStatus(plugin, installedById[plugin.pluginId]),
           installedVersion: installedById[plugin.pluginId]?.version,
           busy: state.busyPluginIds.contains(plugin.pluginId),
@@ -190,6 +202,8 @@ class _DesktopPluginMarketSectionState
 class _MarketPluginRow extends StatelessWidget {
   const _MarketPluginRow({
     required this.plugin,
+    required this.displayName,
+    required this.description,
     required this.status,
     required this.installedVersion,
     required this.busy,
@@ -199,6 +213,10 @@ class _MarketPluginRow extends StatelessWidget {
   });
 
   final PluginMarketItemDto plugin;
+
+  /// 当前语言下的插件名与简介，由父级解析后传入。
+  final String displayName;
+  final String description;
   final PluginMarketStatus status;
   final String? installedVersion;
   final bool busy;
@@ -230,7 +248,7 @@ class _MarketPluginRow extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        plugin.displayName,
+                        displayName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: resolveAppTextStyle(
@@ -255,7 +273,7 @@ class _MarketPluginRow extends StatelessWidget {
                 ),
                 SizedBox(height: spacing.xs / 2),
                 Text(
-                  plugin.description,
+                  description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: resolveAppTextStyle(
@@ -286,7 +304,7 @@ class _MarketPluginRow extends StatelessWidget {
               ),
               tooltip: l10n.pluginMarketCopyHomepage,
               semanticLabel: l10n.pluginMarketCopyHomepageSemantic(
-                plugin.displayName,
+                displayName,
               ),
               icon: const Icon(Icons.content_copy_rounded),
               onPressed: onCopyHomepage,

@@ -72,3 +72,22 @@ List<String> asStringList(dynamic value, {bool trim = false}) {
       if (asStringOrNull(item, trim: trim) case final text?) text,
   ];
 }
+
+/// 宽松转 `Map<String, String>`：非 Map 返回空 Map；只保留键值都是非空字符串的项。
+///
+/// [trim] 为 `true` 时逐项 trim，trim 后为空的项会被丢弃。
+Map<String, String> asStringMap(dynamic value, {bool trim = false}) {
+  final map = asMapOrNull(value);
+  if (map == null) {
+    return const <String, String>{};
+  }
+  final result = <String, String>{};
+  for (final entry in map.entries) {
+    final key = asStringOrNull(entry.key, trim: trim);
+    final text = asStringOrNull(entry.value, trim: trim);
+    if (key != null && text != null) {
+      result[key] = text;
+    }
+  }
+  return result;
+}

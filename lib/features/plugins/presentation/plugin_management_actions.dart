@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:sakuramedia/app/app_platform.dart';
+import 'package:sakuramedia/app/language/providers/language_providers.dart';
 import 'package:sakuramedia/core/network/api_error_message.dart';
 import 'package:sakuramedia/core/platform/clipboard_copy.dart';
 import 'package:sakuramedia/features/plugins/data/dto/plugin_dto.dart';
@@ -207,6 +208,8 @@ class PluginManagementActions {
     if (release == null) {
       return;
     }
+    final displayName =
+        plugin.localizedDisplayName(ref.read(appLanguageControllerProvider));
     final confirmed = await showAppConfirmDialog(
       context,
       title: _l10n.pluginInstallTitle,
@@ -214,7 +217,7 @@ class PluginManagementActions {
           _l10n.pluginMarketInstallMessage(
             plugin.repo,
             release.version,
-            plugin.displayName,
+            displayName,
           ) +
           (plugin.official ? '' : _l10n.pluginCommunityWarning),
       confirmLabel: _l10n.pluginInstallConfirm,
@@ -255,11 +258,13 @@ class PluginManagementActions {
     if (release == null) {
       return;
     }
+    final displayName =
+        plugin.localizedDisplayName(ref.read(appLanguageControllerProvider));
     final confirmed = await showAppConfirmDialog(
       context,
       title: _l10n.pluginUpgradeTitle,
       message: _l10n.pluginUpgradeMessage(
-        plugin.displayName,
+        displayName,
         installedVersion,
         release.version,
       ),

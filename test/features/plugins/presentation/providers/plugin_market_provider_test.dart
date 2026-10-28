@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sakuramedia/app/language/app_language.dart';
+import 'package:sakuramedia/app/language/providers/language_providers.dart';
 import 'package:sakuramedia/core/network/api_client.dart';
 import 'package:sakuramedia/core/session/providers/session_store_provider.dart';
 import 'package:sakuramedia/core/session/session_store.dart';
@@ -114,6 +116,50 @@ void main() {
         container.read(pluginMarketProvider).requireValue.visiblePlugins,
         hasLength(2),
       );
+    });
+
+    test('setKeyword matches every language variant', () async {
+      api.fetchMarketCatalogHandler = (_) async => catalogWith(<
+        PluginMarketItemDto
+      >[
+        pluginMarketItemDto(
+          pluginId: 'sakuramedia_javbus_metadata',
+          displayName: 'JavBus',
+          displayNameI18n: <String, String>{
+            'zh-CN': 'JavBus',
+            'en': 'JavBus Metadata',
+          },
+          descriptionI18n: <String, String>{
+            'zh-CN': '按番号补全元数据',
+            'en': 'Fills in movie metadata by movie number',
+          },
+        ),
+      ]);
+      await container.read(pluginMarketProvider.future);
+
+      container.read(pluginMarketProvider.notifier).setKeyword('metadata');
+
+      final state = container.read(pluginMarketProvider).requireValue;
+      expect(state.visiblePlugins.single.pluginId, 'sakuramedia_javbus_metadata');
+
+      container.read(pluginMarketProvider.notifier).setKeyword('');
+      expect(
+        container.read(pluginMarketProvider).requireValue.visiblePlugins,
+        hasLength(1),
+      );
+    });
+
+    test('does not refetch the catalog when the interface language changes', () async {
+      api.fetchMarketCatalogHandler = (_) async =>
+          catalogWith(<PluginMarketItemDto>[pluginMarketItemDto()]);
+      await container.read(pluginMarketProvider.future);
+      expect(api.fetchMarketCatalogCalls, 1);
+
+      await container
+          .read(appLanguageControllerProvider.notifier)
+          .setLanguage(AppLanguage.en);
+
+      expect(api.fetchMarketCatalogCalls, 1);
     });
 
     test('install downloads, uploads with sha256 and reloads installed list', () async {
@@ -236,6 +282,9 @@ class _FakePluginsApi extends PluginsApi {
 
   Future<PluginMarketCatalogDto> Function(String indexUrl)?
   fetchMarketCatalogHandler;
+
+  /// 索引拉取次数：切语言不应该重新拉取市场目录。
+  int fetchMarketCatalogCalls = 0;
   Future<Uint8List> Function(PluginMarketReleaseDto release)?
   downloadMarketReleaseHandler;
   Future<void> Function(Uint8List, String, String?)? installHandler;
@@ -244,6 +293,7 @@ class _FakePluginsApi extends PluginsApi {
 
   @override
   Future<PluginMarketCatalogDto> fetchMarketCatalog(String indexUrl) {
+    fetchMarketCatalogCalls += 1;
     return fetchMarketCatalogHandler!(indexUrl);
   }
 

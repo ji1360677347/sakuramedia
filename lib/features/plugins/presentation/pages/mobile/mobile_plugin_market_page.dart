@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sakuramedia/app/language/app_language.dart';
+import 'package:sakuramedia/app/language/providers/language_providers.dart';
 import 'package:sakuramedia/core/network/api_error_message.dart';
 import 'package:sakuramedia/features/plugins/data/dto/plugin_dto.dart';
 import 'package:sakuramedia/features/plugins/data/dto/plugin_market_dto.dart';
@@ -55,6 +57,7 @@ class _MobilePluginMarketPageState
   @override
   Widget build(BuildContext context) {
     final asyncMarket = ref.watch(pluginMarketProvider);
+    final language = ref.watch(appLanguageControllerProvider);
     final installedById = <String, PluginSummaryDto>{
       for (final plugin
           in ref.watch(pluginsProvider).value?.plugins ??
@@ -133,6 +136,7 @@ class _MobilePluginMarketPageState
                     state,
                     visiblePlugins,
                     installedById,
+                    language,
                   ),
                 ],
               ),
@@ -149,6 +153,7 @@ class _MobilePluginMarketPageState
     PluginMarketState? state,
     List<PluginMarketItemDto> visiblePlugins,
     Map<String, PluginSummaryDto> installedById,
+    AppLanguage language,
   ) {
     final spacing = context.appSpacing;
     final l10n = AppLocalizations.of(context);
@@ -178,6 +183,12 @@ class _MobilePluginMarketPageState
                 if (index > 0) SizedBox(height: spacing.sm),
                 _MobileMarketPluginCard(
                   plugin: placeholders[index],
+                  displayName: placeholders[index].localizedDisplayName(
+                    language,
+                  ),
+                  description: placeholders[index].localizedDescription(
+                    language,
+                  ),
                   status: PluginMarketStatus.notInstalled,
                   installedVersion: null,
                   busy: false,
@@ -210,6 +221,8 @@ class _MobilePluginMarketPageState
         if (index > 0) SizedBox(height: spacing.sm),
         _MobileMarketPluginCard(
           plugin: visiblePlugins[index],
+          displayName: visiblePlugins[index].localizedDisplayName(language),
+          description: visiblePlugins[index].localizedDescription(language),
           status: pluginMarketStatus(
             visiblePlugins[index],
             installedById[visiblePlugins[index].pluginId],
@@ -235,6 +248,8 @@ class _MobilePluginMarketPageState
 class _MobileMarketPluginCard extends StatelessWidget {
   const _MobileMarketPluginCard({
     required this.plugin,
+    required this.displayName,
+    required this.description,
     required this.status,
     required this.installedVersion,
     required this.busy,
@@ -244,6 +259,10 @@ class _MobileMarketPluginCard extends StatelessWidget {
   });
 
   final PluginMarketItemDto plugin;
+
+  /// 当前语言下的插件名与简介，由父级解析后传入。
+  final String displayName;
+  final String description;
   final PluginMarketStatus status;
   final String? installedVersion;
   final bool busy;
@@ -290,7 +309,7 @@ class _MobileMarketPluginCard extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
-                          plugin.displayName,
+                          displayName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: resolveAppTextStyle(
@@ -313,7 +332,7 @@ class _MobileMarketPluginCard extends StatelessWidget {
                     ),
                     SizedBox(height: spacing.xs / 2),
                     Text(
-                      plugin.description,
+                      description,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: resolveAppTextStyle(
@@ -350,7 +369,7 @@ class _MobileMarketPluginCard extends StatelessWidget {
                   ),
                   tooltip: l10n.pluginMarketCopyHomepage,
                   semanticLabel: l10n.pluginMarketCopyHomepageSemantic(
-                    plugin.displayName,
+                    displayName,
                   ),
                   icon: const Icon(Icons.content_copy_rounded),
                   onPressed: onCopyHomepage,

@@ -7,6 +7,9 @@ import 'package:sakuramedia/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:sakuramedia/app/language/app_language.dart';
+import 'package:sakuramedia/app/language/language_store.dart';
+import 'package:sakuramedia/app/language/providers/language_providers.dart';
 import 'package:sakuramedia/core/session/session_store.dart';
 import 'package:sakuramedia/features/plugins/data/plugin_market_source.dart';
 import 'package:sakuramedia/features/plugins/data/plugins_api.dart';
@@ -48,6 +51,64 @@ void main() {
         findsOneWidget,
       );
       expect(find.byKey(const Key('plugin-market-list-card')), findsOneWidget);
+    });
+
+    testWidgets('shows the English name and description in the English UI', (
+      WidgetTester tester,
+    ) async {
+      _enqueueMarket(
+        bundle,
+        plugins: <Map<String, dynamic>>[
+          pluginMarketItemJson(
+            displayName: '演示插件',
+            displayNameI18n: <String, String>{
+              'zh-CN': '演示插件',
+              'en': 'Demo Plugin',
+            },
+            description: '演示插件的用途说明',
+            descriptionI18n: <String, String>{
+              'zh-CN': '演示插件的用途说明',
+              'en': 'What the demo plugin does',
+            },
+          ),
+        ],
+      );
+      _enqueueInstalled(bundle, plugins: const <Map<String, dynamic>>[]);
+
+      await _pumpSection(tester, bundle, language: AppLanguage.en);
+
+      expect(find.text('Demo Plugin'), findsOneWidget);
+      expect(find.text('What the demo plugin does'), findsOneWidget);
+      expect(find.text('演示插件'), findsNothing);
+    });
+
+    testWidgets('shows the Chinese name and description in the Chinese UI', (
+      WidgetTester tester,
+    ) async {
+      _enqueueMarket(
+        bundle,
+        plugins: <Map<String, dynamic>>[
+          pluginMarketItemJson(
+            displayName: '演示插件',
+            displayNameI18n: <String, String>{
+              'zh-CN': '演示插件',
+              'en': 'Demo Plugin',
+            },
+            description: '演示插件的用途说明',
+            descriptionI18n: <String, String>{
+              'zh-CN': '演示插件的用途说明',
+              'en': 'What the demo plugin does',
+            },
+          ),
+        ],
+      );
+      _enqueueInstalled(bundle, plugins: const <Map<String, dynamic>>[]);
+
+      await _pumpSection(tester, bundle);
+
+      expect(find.text('演示插件'), findsOneWidget);
+      expect(find.text('演示插件的用途说明'), findsOneWidget);
+      expect(find.text('Demo Plugin'), findsNothing);
     });
 
     testWidgets('marks a lower installed version as updatable', (
@@ -292,7 +353,11 @@ void _enqueueInstalled(
   );
 }
 
-Future<void> _pumpSection(WidgetTester tester, TestApiBundle bundle) async {
+Future<void> _pumpSection(
+  WidgetTester tester,
+  TestApiBundle bundle, {
+  AppLanguage language = AppLanguage.zhCN,
+}) async {
   tester.view.physicalSize = const Size(1280, 2400);
   tester.view.devicePixelRatio = 1;
   await tester.pumpWidget(
@@ -302,11 +367,14 @@ Future<void> _pumpSection(WidgetTester tester, TestApiBundle bundle) async {
         pluginsApiProvider.overrideWithValue(
           PluginsApi(apiClient: bundle.apiClient),
         ),
+        appLanguageStoreProvider.overrideWithValue(
+          InMemoryLanguageStore(language),
+        ),
       ],
       child: OKToast(
         child: MaterialApp(
           theme: sakuraThemeData,
-          locale: const Locale('zh'),
+          locale: language.locale,
           localizationsDelegates: <LocalizationsDelegate<dynamic>>[
             AppLocalizations.delegate,
             ...GlobalMaterialLocalizations.delegates,

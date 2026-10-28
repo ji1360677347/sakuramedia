@@ -4,6 +4,9 @@ import 'package:sakuramedia/features/plugins/data/dto/plugin_market_dto.dart';
 Map<String, dynamic> pluginMarketItemJson({
   String pluginId = 'demo_plugin',
   String displayName = '演示插件',
+  String description = '演示插件的用途说明',
+  Map<String, String>? displayNameI18n,
+  Map<String, String>? descriptionI18n,
   String version = '1.1.0',
   bool official = true,
   int hostApiVersion = 10,
@@ -13,7 +16,9 @@ Map<String, dynamic> pluginMarketItemJson({
   return <String, dynamic>{
     'plugin_id': pluginId,
     'display_name': displayName,
-    'description': '演示插件的用途说明',
+    'description': description,
+    'display_name_i18n': ?displayNameI18n,
+    'description_i18n': ?descriptionI18n,
     'author': 'SakuraMedia',
     'repo': 'example/$pluginId',
     'homepage': withHomepage
@@ -49,18 +54,23 @@ Map<String, dynamic> pluginMarketIndexJson({
 PluginMarketItemDto pluginMarketItemDto({
   String pluginId = 'demo_plugin',
   String displayName = '演示插件',
+  String description = '演示插件的用途说明',
+  Map<String, String> displayNameI18n = const <String, String>{},
+  Map<String, String> descriptionI18n = const <String, String>{},
   String version = '1.1.0',
   bool official = true,
 }) {
   return PluginMarketItemDto(
     pluginId: pluginId,
     displayName: displayName,
-    description: '演示插件的用途说明',
+    description: description,
     author: 'SakuraMedia',
     repo: 'example/$pluginId',
     homepage: 'https://github.com/example/$pluginId',
     categories: const <String>['other'],
     official: official,
+    displayNameI18n: displayNameI18n,
+    descriptionI18n: descriptionI18n,
     latest: PluginMarketReleaseDto(
       version: version,
       hostApiVersion: 10,

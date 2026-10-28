@@ -8,6 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:sakuramedia/app/app_platform.dart';
+import 'package:sakuramedia/app/language/app_language.dart';
+import 'package:sakuramedia/app/language/language_store.dart';
+import 'package:sakuramedia/app/language/providers/language_providers.dart';
 import 'package:sakuramedia/core/session/session_store.dart';
 import 'package:sakuramedia/features/plugins/data/plugin_market_source.dart';
 import 'package:sakuramedia/features/plugins/data/plugins_api.dart';
@@ -55,6 +58,35 @@ void main() {
       find.byKey(const Key('mobile-plugin-market-install-button-demo_plugin')),
       findsOneWidget,
     );
+  });
+
+  testWidgets('shows the English name and description in the English UI', (
+    tester,
+  ) async {
+    _enqueueMarket(
+      bundle,
+      plugins: <Map<String, dynamic>>[
+        pluginMarketItemJson(
+          displayName: '演示插件',
+          displayNameI18n: <String, String>{
+            'zh-CN': '演示插件',
+            'en': 'Demo Plugin',
+          },
+          description: '演示插件的用途说明',
+          descriptionI18n: <String, String>{
+            'zh-CN': '演示插件的用途说明',
+            'en': 'What the demo plugin does',
+          },
+        ),
+      ],
+    );
+    _enqueueInstalled(bundle, plugins: const <Map<String, dynamic>>[]);
+
+    await _pumpPage(tester, bundle, language: AppLanguage.en);
+
+    expect(find.text('Demo Plugin'), findsOneWidget);
+    expect(find.text('What the demo plugin does'), findsOneWidget);
+    expect(find.text('演示插件'), findsNothing);
   });
 
   testWidgets('marks a lower installed version as updatable', (tester) async {
@@ -206,7 +238,11 @@ void _enqueueInstalled(
   );
 }
 
-Future<void> _pumpPage(WidgetTester tester, TestApiBundle bundle) async {
+Future<void> _pumpPage(
+  WidgetTester tester,
+  TestApiBundle bundle, {
+  AppLanguage language = AppLanguage.zhCN,
+}) async {
   tester.view.physicalSize = const Size(390, 844);
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
@@ -217,11 +253,14 @@ Future<void> _pumpPage(WidgetTester tester, TestApiBundle bundle) async {
         pluginsApiProvider.overrideWithValue(
           PluginsApi(apiClient: bundle.apiClient),
         ),
+        appLanguageStoreProvider.overrideWithValue(
+          InMemoryLanguageStore(language),
+        ),
       ],
       child: OKToast(
         child: MaterialApp(
           theme: sakuraMobileThemeData,
-          locale: const Locale('zh'),
+          locale: language.locale,
           localizationsDelegates: <LocalizationsDelegate<dynamic>>[
             AppLocalizations.delegate,
             ...GlobalMaterialLocalizations.delegates,
