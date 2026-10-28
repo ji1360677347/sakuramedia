@@ -48,7 +48,7 @@ Go to "System Settings → Download Clients → Add" and select the target media
 
 Click "Test Configuration" before saving to confirm that the directory mapping and hard links pass. A directory mapping failure usually means the two root directories do not point at the same physical directory; see [qBittorrent paths for automatic downloading](/guide/container-paths#qbittorrent-paths-for-automatic-downloading) for how to fix it.
 
-<Screenshot src="/images/guide/download-client-form.png" alt="Add download client form" caption="Interface illustration: when adding a download client, select the target media library and fill in the configuration fields provided by the plugin." />
+<Screenshot src="/images/guide-en/download-client-form.png" alt="Add download client form" caption="Interface illustration: when adding a download client, select the target media library and fill in the configuration fields provided by the plugin." />
 
 ## 3. Configure an indexer and bind a download client
 

@@ -34,7 +34,7 @@ I like that feeling of being able to choose at any time. A movie can be watched 
 
 Watch a bit longer when I have time, and stop when I see something I like.
 
-<Screenshot src="/images/readme/desktop-player.png" alt="SakuraMedia player with the thumbnail panel" caption="The thumbnail panel sits to the right of the player; it can follow the playback position or be browsed freely." />
+<Screenshot src="/images/readme-en/desktop-player.png" alt="SakuraMedia player with the thumbnail panel" caption="The thumbnail panel sits to the right of the player; it can follow the playback position or be browsed freely." />
 
 ## This frame is nice—is there more?
 
@@ -50,7 +50,7 @@ What started as opening one movie may lead, through one frame, to discovering so
 
 Similar doesn't necessarily mean liked. Some results are just close in color or scene, and I may not be interested after looking. But occasionally finding a segment that suits me makes this casual exploration feel worthwhile.
 
-<Screenshot src="/images/readme/desktop-image-search.png" alt="SakuraMedia image search results page" caption="Start an image search from a thumbnail to find similar frames among indexed images." />
+<Screenshot src="/images/readme-en/desktop-image-search.png" alt="SakuraMedia image search results page" caption="Start an image search from a thumbnail to find similar frames among indexed images." />
 
 ## Let downloaded movies be seen again
 

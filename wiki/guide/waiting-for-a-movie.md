@@ -14,7 +14,7 @@ This is the main way I use subscriptions and auto-download.
 
 There are many ways to find new movies. Maybe an actor I like announced a new work, or while browsing movies, I looked at the cover and description and thought this one was worth a look.
 
-<Screenshot src="/images/readme/desktop-discover.png" alt="SakuraMedia discover page" caption="New releases from actors, popular new movies, and today's recommendations can all be starting points for a subscription." />
+<Screenshot src="/images/readme-en/desktop-discover.png" alt="SakuraMedia discover page" caption="New releases from actors, popular new movies, and today's recommendations can all be starting points for a subscription." />
 
 If it hasn't been released yet, or there's no source for now, subscribe first. Movies that already have a source but I have no time to watch can be handled the same way.
 

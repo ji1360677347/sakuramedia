@@ -2,7 +2,7 @@
 
 You can start from a single movie number, or browse slowly through actors, tags or rankings. The goal of discovery is to pick the movies you genuinely want to subscribe to.
 
-<Screenshot src="/images/readme/desktop-discover.png" alt="SakuraMedia Discover page" caption="Discover arranges new from actors, popular new movies and today's picks into sections." />
+<Screenshot src="/images/readme-en/desktop-discover.png" alt="SakuraMedia Discover page" caption="Discover arranges new from actors, popular new movies and today's picks into sections." />
 
 ## Local search and online search
 

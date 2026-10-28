@@ -17,9 +17,9 @@ This feature searches images already indexed by the system; it does not search t
 3. Review the results on the search-by-image page and adjust the scope and filters as needed.
 4. Open a result you are interested in to view details; thumbnail results with a playable source can jump to the matching time and keep playing.
 
-<Screenshot src="/images/readme/thumbnail-menu.png" alt="Thumbnail action menu" caption="Start a search from the thumbnail menu with 'Similar images'." />
+<Screenshot src="/images/readme-en/thumbnail-menu.png" alt="Thumbnail action menu" caption="Start a search from the thumbnail menu with 'Similar images'." />
 
-<Screenshot src="/images/readme/desktop-image-search.png" alt="SakuraMedia search-by-image results page" caption="Search by image and search by text share the results page, ordered by similarity." />
+<Screenshot src="/images/readme-en/desktop-image-search.png" alt="SakuraMedia search-by-image results page" caption="Search by image and search by text share the results page, ordered by similarity." />
 
 The action menu on a movie's plot images can also start a similar-image search. Similar images do not mean the same actors, story or content; check the results yourself.
 

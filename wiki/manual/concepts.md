@@ -12,7 +12,7 @@ SakuraMedia links discovery, subscription, download, watching and collecting tog
 
 Seeing a cover and movie details only means the system has the record for that movie. You can play only once the details show available media. One movie can have several media items, for example different quality levels or different cuts.
 
-<Screenshot src="/images/readme/desktop-detail.png" alt="SakuraMedia movie details page" caption="The details page shows the movie record and the media list together; a cover does not mean playable media exists." />
+<Screenshot src="/images/readme-en/desktop-detail.png" alt="SakuraMedia movie details page" caption="The details page shows the movie record and the media list together; a cover does not mean playable media exists." />
 
 This manual uses "sync records" for fetching movie information and "media imported" for a completed file import. Online search and actor release sync produce records; they do not mean the video has been downloaded.
 

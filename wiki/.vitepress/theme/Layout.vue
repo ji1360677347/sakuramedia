@@ -81,7 +81,28 @@ const { localeIndex } = useData()
 
 const text = computed(() => copy[localeIndex.value] ?? copy.root)
 
-const previewImage = withBase('/images/readme/home-hero.jpg')
+// 英文站用 readme-en/ 下的英文截图与英文演示视频；中文站用 readme/ 下的中文资源。
+const isEnglish = computed(() => localeIndex.value === 'root')
+
+const previewImage = computed(() =>
+  withBase(
+    isEnglish.value
+      ? '/images/readme-en/home-hero.jpg'
+      : '/images/readme/home-hero.jpg',
+  ),
+)
+
+const demoVideoSource = computed(() =>
+  isEnglish.value
+    ? '/videos/sakuramedia-demo-en.mp4'
+    : '/videos/sakuramedia-demo.mp4',
+)
+
+const demoPoster = computed(() =>
+  isEnglish.value
+    ? '/images/readme-en/desktop-overview.png'
+    : '/images/readme/desktop-overview.png',
+)
 
 const storyLink = computed(() =>
   withBase(
@@ -108,8 +129,8 @@ const manualLink = computed(() =>
           <p class="demo__note">{{ text.demoNote }}</p>
         </div>
         <DemoVideo
-          src="/videos/sakuramedia-demo.mp4"
-          poster="/images/readme/desktop-overview.png"
+          :src="demoVideoSource"
+          :poster="demoPoster"
           :chapters="text.chapters"
           :title="text.demoVideoTitle"
           :caption="text.demoCaption"

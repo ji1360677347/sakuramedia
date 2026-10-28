@@ -144,7 +144,7 @@ The media library path is the final destination for imported movies; the manual 
 See [Container Paths and Hard Links](/guide/container-paths) for the full rules.
 :::
 
-<Screenshot src="/images/guide/media-library-form.png" alt="Add media library form" caption="Interface illustration: adding a media library; the fields come from the selected storage plugin." />
+<Screenshot src="/images/guide-en/media-library-form.png" alt="Add media library form" caption="Interface illustration: adding a media library; the fields come from the selected storage plugin." />
 
 ### 2. Import your existing movies
 

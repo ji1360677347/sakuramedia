@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:oktoast/oktoast.dart';
@@ -224,6 +225,9 @@ Future<void> capturePreview(
 /// - [size] 为逻辑尺寸（DPR 恒 1），结束自动复位。
 /// - [settle] 为 false 时只 `pump` 两帧（加载态/持续动画场景），
 ///   调用方可自行 `pump(Duration(...))` 后手动 [capturePreview]。
+/// - [locale] 决定 widget 层文案语言（`AppLocalizations.of(context)`）；
+///   provider 层文案由 `appLocalizationsProvider` 决定，需要时用
+///   [extraOverrides] 覆盖 `appLanguageStoreProvider`。
 /// - 返回 RepaintBoundary 的 key，便于分阶段多次截图。
 Future<GlobalKey> pumpPreviewApp(
   WidgetTester tester, {
@@ -235,6 +239,8 @@ Future<GlobalKey> pumpPreviewApp(
   AppPlatform appPlatform = AppPlatform.desktop,
   Widget Function(Widget child)? wrap,
   RiverpodPageCache? pageStateCache,
+  Locale locale = const Locale('zh'),
+  List<Override> extraOverrides = const <Override>[],
   bool settle = true,
   String? outputPath,
 }) async {
@@ -246,7 +252,10 @@ Future<GlobalKey> pumpPreviewApp(
   final boundaryKey = GlobalKey();
   await tester.pumpWidget(
     ProviderScope(
-      overrides: bundle.riverpodOverrides(pageStateCache: pageStateCache),
+      overrides: <Override>[
+        ...bundle.riverpodOverrides(pageStateCache: pageStateCache),
+        ...extraOverrides,
+      ],
       child: AppPlatformScope(
         platform: appPlatform,
         child: OKToast(
@@ -254,7 +263,7 @@ Future<GlobalKey> pumpPreviewApp(
             key: boundaryKey,
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              locale: const Locale('zh'),
+              locale: locale,
               localizationsDelegates: <LocalizationsDelegate<dynamic>>[
                 AppLocalizations.delegate,
                 ...GlobalMaterialLocalizations.delegates,

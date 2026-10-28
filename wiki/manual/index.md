@@ -11,9 +11,9 @@ The tutorials follow the page names and entry points of the desktop client. Mobi
 > Screenshots use demo data, with covers and thumbnails blurred.
 
 <ScreenshotGrid :columns="3">
-  <Screenshot loading="eager" src="/images/readme/desktop-discover.png" alt="SakuraMedia Discover page" caption="New from actors, popular new movies and today's picks." />
-  <Screenshot loading="eager" src="/images/readme/desktop-image-search.png" alt="SakuraMedia search-by-image results page" caption="Search indexed library images by picture or text." />
-  <Screenshot loading="eager" src="/images/readme/clips-page.png" alt="SakuraMedia Clips page" caption="Clip collections and all clips." />
+  <Screenshot loading="eager" src="/images/readme-en/desktop-discover.png" alt="SakuraMedia Discover page" caption="New from actors, popular new movies and today's picks." />
+  <Screenshot loading="eager" src="/images/readme-en/desktop-image-search.png" alt="SakuraMedia search-by-image results page" caption="Search indexed library images by picture or text." />
+  <Screenshot loading="eager" src="/images/readme-en/clips-page.png" alt="SakuraMedia Clips page" caption="Clip collections and all clips." />
 </ScreenshotGrid>
 
 ## Choose your starting point

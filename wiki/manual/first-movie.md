@@ -20,11 +20,11 @@ Resource lookup, download status sync and importing are handled by different bac
 
 Open the search entry point, type a movie number or keyword, and the search runs against the local library by default. On first use the local library may be empty, so click "Fetch from external source" in the results area, or turn on "Online search" in the search box.
 
-<Screenshot src="/images/guide/online-search-network-toggle.png" alt="The online search switch to the right of the search box" caption="The online switch to the right of the search box; external sources are queried only when it is on." />
+<Screenshot src="/images/guide-en/online-search-network-toggle.png" alt="The online search switch to the right of the search box" caption="The online switch to the right of the search box; external sources are queried only when it is on." />
 
 Once you get results, open the details and check the movie number, cover and cast to confirm this is the movie you want. Online search fetches records; the video file still has to be downloaded or imported.
 
-<Screenshot src="/images/readme/desktop-detail.png" alt="SakuraMedia movie details page" caption="Check the movie number, cover and cast in the details; the media list is further down the page." />
+<Screenshot src="/images/readme-en/desktop-detail.png" alt="SakuraMedia movie details page" caption="Check the movie number, cover and cast in the details; the media list is further down the page." />
 
 If there are no results, check the keywords you entered and the online switch first, then check connectivity to the metadata source on the "Overview" page.
 
@@ -51,7 +51,7 @@ To actively verify the automated flow, trigger "Auto download missing subscribed
 
 Go to the movie details and pick a version from the media list to play. When there are several files, pay attention to the file name, size and media library.
 
-<Screenshot src="/images/readme/desktop-player.png" alt="SakuraMedia player with the thumbnail panel" caption="Once playable media exists, choose a version to enter the player; thumbnails on the right help you locate scenes." />
+<Screenshot src="/images/readme-en/desktop-player.png" alt="SakuraMedia player with the thumbnail panel" caption="Once playable media exists, choose a version to enter the player; thumbnails on the right help you locate scenes." />
 
 Once playback works, this flow is complete. The subscription stays; from here you can subscribe to more movies or [follow actors you like](./discover).
 

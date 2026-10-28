@@ -20,7 +20,7 @@ Actor subscriptions are for continuously receiving updates to a performer's work
 
 Thumbnails spread the frames of a movie out along a timeline; click one to jump to that point. You can browse the scenes first and then decide where to start watching.
 
-<Screenshot src="/images/readme/desktop-player.png" alt="SakuraMedia player with the thumbnail panel" caption="Thumbnails lay the movie's frames out along a timeline — click one to jump there." />
+<Screenshot src="/images/readme-en/desktop-player.png" alt="SakuraMedia player with the thumbnail panel" caption="Thumbnails lay the movie's frames out along a timeline — click one to jump there." />
 
 When you find a frame you like, you can also use "Similar Images" to find related content in your library, or type a description to search frames. The search covers images that have already been indexed, so you need to set up the companion services and finish indexing first.
 
@@ -32,7 +32,7 @@ Organize movies with playlists, mark the frames and positions you want to revisi
 
 Generated clips remain after you delete the source media; moments depend on the source media, so deleting the media also deletes the associated moments. Choose the approach based on what you want to keep.
 
-<Screenshot src="/images/readme/clips-page.png" alt="SakuraMedia clips page" caption="Clips are standalone video files that you can watch back to back as a collection." />
+<Screenshot src="/images/readme-en/clips-page.png" alt="SakuraMedia clips page" caption="Clips are standalone video files that you can watch back to back as a collection." />
 
 [Learn about favorites and organization](/manual/collections)
 

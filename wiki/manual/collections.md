@@ -22,7 +22,7 @@ Name lists by genre, actor or your own viewing plan. Adding to a list organizes 
 
 In a movie's thumbnails or frame preview, choose "Add marker" to save a position you are interested in. View saved frames under "Moments" in the sidebar; once a moment is selected, you can group it with "Add to collection".
 
-<Screenshot src="/images/readme/thumbnail-menu.png" alt="Thumbnail action menu" caption="Thumbnail action menu: similar images, save locally, add marker, play." />
+<Screenshot src="/images/readme-en/thumbnail-menu.png" alt="Thumbnail action menu" caption="Thumbnail action menu: similar images, save locally, add marker, play." />
 
 To revisit, open a moment using an available source media. A moment records a frame and a position; it does not extract a standalone video. When the source is unavailable, a visible preview image does not mean the original still plays.
 
@@ -37,13 +37,13 @@ In the current version, deleting media also deletes that media's moments and the
 3. Click create, optionally fill in a clip title and confirm.
 4. Wait for generation to succeed, then view and play it on the "Clips" page.
 
-<Screenshot variant="narrow" src="/images/readme/clip-selection.png" alt="Selecting a clip range" caption="Choose the start and end points, confirm the range and duration, then create the clip." />
+<Screenshot variant="narrow" src="/images/readme-en/clip-selection.png" alt="Selecting a clip range" caption="Choose the start and end points, confirm the range and duration, then create the clip." />
 
 Clip generation takes time and is limited by server settings such as the maximum duration. If it fails, read the message first and, if needed, shorten the range and check the service configuration; see [Clips FAQ](/faq#clips-and-video-collections).
 
 A successfully generated clip is a standalone video file that you can add to a clip collection and revisit from it. Before cleaning up the original, confirm the clip has been generated and can play.
 
-<Screenshot src="/images/readme/clips-page.png" alt="SakuraMedia Clips page" caption="The Clips page brings clip collections and all clips together." />
+<Screenshot src="/images/readme-en/clips-page.png" alt="SakuraMedia Clips page" caption="The Clips page brings clip collections and all clips together." />
 
 ## Organizing and backup
 

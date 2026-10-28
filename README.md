@@ -17,7 +17,7 @@
   ·
   <a href="https://tinypinglite.github.io/sakuramedia/"><strong>Browse the Wiki</strong></a>
   ·
-  <a href="https://tinypinglite.github.io/sakuramedia/videos/sakuramedia-demo.mp4"><strong>Watch the demo</strong></a>
+  <a href="https://tinypinglite.github.io/sakuramedia/videos/sakuramedia-demo-en.mp4"><strong>Watch the demo</strong></a>
 </p>
 
 <p align="center">
@@ -34,7 +34,7 @@
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/home-hero.jpg" alt="SakuraMedia interface preview" width="1100" />
+  <img src="./wiki/public/images/readme-en/home-hero.jpg" alt="SakuraMedia interface preview" width="1100" />
 </p>
 
 <p align="center">
@@ -82,77 +82,77 @@ From finding and downloading movies to watching and organizing them, the current
 > Screenshots use demo data; covers and thumbnails are blurred. See the video below for the full demo.
 
 <p align="center">
-  <img src="./wiki/public/images/readme/carousel.gif" alt="Interface carousel" width="900" />
+  <img src="./wiki/public/images/readme-en/carousel.gif" alt="Interface carousel" width="900" />
 </p>
 <p align="center">
   <sub>Overview / Discover / Details / Player / Clips / PornBox</sub>
 </p>
 
 <p align="center">
-  <a href="https://tinypinglite.github.io/sakuramedia/videos/sakuramedia-demo.mp4"><strong>▶ Watch the full 45-second demo</strong></a>
+  <a href="https://tinypinglite.github.io/sakuramedia/videos/sakuramedia-demo-en.mp4"><strong>▶ Watch the full 45-second demo</strong></a>
 </p>
 
 <details>
 <summary><strong>More screenshots</strong></summary>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/desktop-overview.png" alt="Overview" width="1100" />
+  <img src="./wiki/public/images/readme-en/desktop-overview.png" alt="Overview" width="1100" />
 </p>
 <p align="center">
   <sub>Overview: media assets, viewing trends, storage distribution</sub>
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/desktop-discover.png" alt="Discover page" width="49%" />
-  <img src="./wiki/public/images/readme/desktop-detail.png" alt="Movie details" width="49%" />
+  <img src="./wiki/public/images/readme-en/desktop-discover.png" alt="Discover page" width="49%" />
+  <img src="./wiki/public/images/readme-en/desktop-detail.png" alt="Movie details" width="49%" />
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/desktop-player.png" alt="Player with thumbnail timeline" width="1100" />
+  <img src="./wiki/public/images/readme-en/desktop-player.png" alt="Player with thumbnail timeline" width="1100" />
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/thumbnail-menu.png" alt="Searching similar frames from a thumbnail" width="1100" />
+  <img src="./wiki/public/images/readme-en/thumbnail-menu.png" alt="Searching similar frames from a thumbnail" width="1100" />
 </p>
 <p align="center">
   <sub>Right-click a thumbnail → Similar images</sub>
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/thumbnail-timeline.gif" alt="Thumbnail timeline demo" width="400" />
-  <img src="./wiki/public/images/readme/clip-selection.png" alt="Selecting a clip" width="400" />
+  <img src="./wiki/public/images/readme-en/thumbnail-timeline.gif" alt="Thumbnail timeline demo" width="400" />
+  <img src="./wiki/public/images/readme-en/clip-selection.png" alt="Selecting a clip" width="400" />
 </p>
 <p align="center">
   <sub>Thumbnail timeline / Clip selection</sub>
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/clips-page.png" alt="Clips page" width="1100" />
+  <img src="./wiki/public/images/readme-en/clips-page.png" alt="Clips page" width="1100" />
 </p>
 <p align="center">
   <sub>Clips page: browse, play, add to collections</sub>
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/pornbox-collection.png" alt="PornBox collection details" width="1100" />
+  <img src="./wiki/public/images/readme-en/pornbox-collection.png" alt="PornBox collection details" width="1100" />
 </p>
 <p align="center">
   <sub>PornBox collections: members, manual order, play all</sub>
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/pornbox-timeline.png" alt="Collection playback thumbnails and adding a marker" width="420" />
+  <img src="./wiki/public/images/readme-en/pornbox-timeline.png" alt="Collection playback thumbnails and adding a marker" width="420" />
 </p>
 <p align="center">
   <sub>Collection playback: the thumbnail panel is assembled per collection; right-click → Add marker</sub>
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/desktop-image-search.png" alt="Image search" width="1100" />
+  <img src="./wiki/public/images/readme-en/desktop-image-search.png" alt="Image search" width="1100" />
 </p>
 
 <p align="center">
-  <img src="./wiki/public/images/readme/mobile-home.png" alt="Mobile" width="260" />
+  <img src="./wiki/public/images/readme-en/mobile-home.png" alt="Mobile" width="260" />
 </p>
 
 </details>

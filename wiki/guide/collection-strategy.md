@@ -58,7 +58,7 @@ I back these clips up carefully. They are what I spent time picking out and trul
 
 I don't cut every moment into a file. Most likes are fine to just note down first; only the passages I revisit repeatedly and truly want to keep get saved as clips.
 
-<Screenshot src="/images/readme/clips-page.png" alt="SakuraMedia clips page" caption="The clips page: standalone videos that keep the ranges you like." />
+<Screenshot src="/images/readme-en/clips-page.png" alt="SakuraMedia clips page" caption="The clips page: standalone videos that keep the ranges you like." />
 
 ## Collections, to keep my own way of organizing
 

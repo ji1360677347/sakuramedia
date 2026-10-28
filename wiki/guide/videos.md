@@ -29,7 +29,7 @@ A video's title comes from the name of the import source by default. An import m
 
 Open a video's detail page from the PornBox list and then start playback. When there is watch progress, you can continue from the resume prompt; thumbnails are generated in the background, so they may take a moment right after import.
 
-<Screenshot src="/images/readme/pornbox-collection.png" alt="PornBox video collection detail" caption="On the collection detail page you can reorder the members and start playback from the current order." />
+<Screenshot src="/images/readme-en/pornbox-collection.png" alt="PornBox video collection detail" caption="On the collection detail page you can reorder the members and start playback from the current order." />
 
 Mobile also has entry points for browsing and playing PornBox content; the page paths in this management guide follow the desktop client.
 
@@ -43,7 +43,7 @@ Create a collection from the collections entry in PornBox, add the relevant vide
 
 Video collections manage different objects than movie playlists, moment collections and clip collections — choose according to what you want to organize.
 
-<Screenshot variant="narrow" src="/images/readme/pornbox-timeline.png" alt="PornBox collection playback thumbnails" caption="During continuous collection playback, the thumbnails on the right stitch the key frames of each episode into a single timeline." />
+<Screenshot variant="narrow" src="/images/readme-en/pornbox-timeline.png" alt="PornBox collection playback thumbnails" caption="During continuous collection playback, the thumbnails on the right stitch the key frames of each episode into a single timeline." />
 
 ## Differences from movie subscriptions
 
